@@ -7,4 +7,5 @@ type Container interface {
 	GetContainers() (*structs.Container, error)
 	Start() error
 	Stop() error
+	GetStats() *structs.ContainerStat
 }

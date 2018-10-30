@@ -7,3 +7,13 @@ type Container struct {
 	CreatedTime time.Time `json:"created_time,omitempty"`
 	Name        string    `json:"name"`
 }
+
+// ContainerStat returns statistics for container
+type ContainerStat struct {
+	Timestamp time.Time `json:"timestamp"`
+	CPU       CPUStat   `json:"cpu_stat"`
+}
+
+// CPUStat defines statistics for cpu usage
+type CPUStat struct {
+}
