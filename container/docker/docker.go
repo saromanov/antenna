@@ -17,5 +17,6 @@ func Init() *Docker {
 	if err != nil {
 		panic(err)
 	}
-	return Docker{client: client}
+	d := &Docker{client: client}
+	return d
 }
