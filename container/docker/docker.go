@@ -1,5 +1,11 @@
 package docker
 
+import (
+	"github.com/fsouza/go-dockerclient"
+)
+
+const endpoint = "unix:///var/run/docker.sock"
+
 // Docker provides implementation of the Docker
 // logic
 type Docker struct {
