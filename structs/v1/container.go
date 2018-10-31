@@ -6,6 +6,10 @@ import "time"
 type Container struct {
 	CreatedTime time.Time `json:"created_time,omitempty"`
 	Name        string    `json:"name"`
+	State       string    `json:"state"`
+	Status      string    `json:"status"`
+	Image       string    `json:"image"`
+	Names       []string  `json:"names"`
 }
 
 // ContainerStat returns statistics for container
