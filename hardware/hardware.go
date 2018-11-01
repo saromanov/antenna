@@ -3,10 +3,14 @@ package hardware
 import (
 	"io/ioutil"
 	"os"
+	"regexp"
 	"runtime"
 )
 
-const procMem = "/proc/meminfo"
+const (
+	procMem           = "/proc/meminfo"
+	memoryTotalRegexp = regexp.MustCompile(`MemTotal:\s*([0-9]+) kB`)
+)
 
 // GetNumberOfCores returns number of cores at machine
 func GetNumberOfCores() int {
