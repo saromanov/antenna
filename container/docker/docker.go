@@ -34,10 +34,20 @@ func (d *Docker) GetContainers() ([]*structs.Container, error) {
 }
 
 // toContainerList returns containers at inner representation
-func (d *Docker) toContainerList(c []docker.APIContainer) ([]*structs.Container, error) {
+func (d *Docker) toContainerList(cl []docker.APIContainer) ([]*structs.Container, error) {
 	containers := make([]*structs.Container, len(c))
-	for i, cont := range c {
-		containers[i] = d.toContainer(c)
+	for i, cont := range cl {
+		containers[i] = d.toContainer(cont)
 	}
 	return nil, containers
+}
+
+// toContainer retrurns container at inner representation
+func (d *Docker) toContainer(c docker.APIContainer) *structs.Container {
+	return &structs.Container{
+		Image:  c.Image,
+		Names:  c.Names,
+		Status: c.Status,
+		State:  c.State,
+	}
 }
