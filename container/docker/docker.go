@@ -2,6 +2,7 @@ package docker
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/fsouza/go-dockerclient"
 	structs "github.com/saromanov/antenna/structs/v1"
@@ -21,12 +22,25 @@ func Init(conf *structs.ClientContainerConfig) *Docker {
 	if endpoint == "" {
 		endpoint = defaultEndpoint
 	}
-	client, err := docker.NewClient(endpoint)
+	conf.Endpoint = endpoint
+	client, err := createDockerClient(conf)
 	if err != nil {
 		panic(err)
 	}
 	d := &Docker{client: client}
 	return d
+}
+
+// createDockerClient provides init of the docker client with TLS config or without
+func createDockerClient(conf *structs.ClientContainerConfig) (*docker.Client, error) {
+	if conf.CertPathEnv != "" {
+		path := os.Getenv("DOCKER_CERT_PATH")
+		ca := fmt.Sprintf("%s/ca.pem", path)
+		cert := fmt.Sprintf("%s/cert.pem", path)
+		key := fmt.Sprintf("%s/key.pem", path)
+		return docker.NewTLSClient(conf.Endpoint, cert, key, ca)
+	}
+	return docker.NewClient(conf.Endpoint)
 }
 
 // GetContainers returns list of containers
