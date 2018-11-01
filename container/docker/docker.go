@@ -32,3 +32,12 @@ func (d *Docker) GetContainers() ([]*structs.Container, error) {
 		return nil, fmt.Errorf("unable to get list of containers: %v", err)
 	}
 }
+
+// toContainerList returns containers at inner representation
+func (d *Docker) toContainerList(c []docker.APIContainer) ([]*structs.Container, error) {
+	containers := make([]*structs.Container, len(c))
+	for i, cont := range c {
+		containers[i] = d.toContainer(c)
+	}
+	return nil, containers
+}
