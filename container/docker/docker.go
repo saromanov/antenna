@@ -31,6 +31,12 @@ func (d *Docker) GetContainers() ([]*structs.Container, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unable to get list of containers: %v", err)
 	}
+	cont, err := d.toContainerList()
+	if err != nil {
+		return nil, err
+	}
+	return cont, nil
+
 }
 
 // toContainerList returns containers at inner representation
