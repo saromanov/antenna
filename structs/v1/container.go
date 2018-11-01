@@ -7,6 +7,7 @@ import "time"
 type ClientContainerConfig struct {
 	//CertPathEnv defines path to the cert files
 	CertPathEnv string `json:"cert_path_env"`
+	Endpoint    string `json:"endpoint"`
 }
 
 // Container define struct for container representation

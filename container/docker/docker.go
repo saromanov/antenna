@@ -7,7 +7,7 @@ import (
 	structs "github.com/saromanov/antenna/structs/v1"
 )
 
-const endpoint = "unix:///var/run/docker.sock"
+const defaultEndpoint = "unix:///var/run/docker.sock"
 
 // Docker provides implementation of the Docker
 // logic
@@ -16,7 +16,11 @@ type Docker struct {
 }
 
 // Init provides initialization of the docker
-func Init() *Docker {
+func Init(conf *structs.ClientContainerConfig) *Docker {
+	endpoint := conf.Endpoint
+	if endpoint == "" {
+		endpoint = defaultEndpoint
+	}
 	client, err := docker.NewClient(endpoint)
 	if err != nil {
 		panic(err)
