@@ -30,6 +30,7 @@ type ContainerStat struct {
 type Stat struct {
 	Timestamp time.Time `json:"timestamp"`
 	CPU       CPUStat   `json:"cpu_stat"`
+	HasCPU    bool      `json:"has_cpu"`
 }
 
 // CPUStat defines statistics for cpu usage
