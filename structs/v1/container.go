@@ -20,8 +20,14 @@ type Container struct {
 	Names       []string  `json:"names"`
 }
 
-// ContainerStat returns statistics for container
+// ContainerStat provides definition for statistics
+// on container
 type ContainerStat struct {
+	Stat []*Stat
+}
+
+// ContainerStat returns statistics for container
+type Stat struct {
 	Timestamp time.Time `json:"timestamp"`
 	CPU       CPUStat   `json:"cpu_stat"`
 }
