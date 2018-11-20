@@ -31,7 +31,9 @@ func new(url string) (storage.Storage, error) {
 
 // Add provides adding of stat
 func (i*influxDB) Add(metrics *structs.ContainerStat) error {
-	var points *[]influxdb.Point
+	i.lock.Lock()
+	defer i.lock.Unlock()
+	var points []*influxdb.Point
 	if err := c.Write(points); err != nil {
 		return err
 	}
@@ -39,4 +41,20 @@ func (i*influxDB) Add(metrics *structs.ContainerStat) error {
     	return err
 	}
 	return nil
+}
+
+func (i*influxDB) toPoints(metrics *structs.ContainerStat)[]*influxdb.Point {
+	return nil
+}
+
+// makePoints provides method for making point for InfluxDB
+func makePoint(name string, value interface{}) *influxdb.Point {
+	fields := map[string]interface{}{
+		fieldValue: value,
+	}
+
+	return &influxdb.Point{
+		Measurement: name,
+		Fields:      fields,
+	}
 }
