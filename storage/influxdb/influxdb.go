@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	influxdb "github.com/influxdb/influxdb/client"
+	"github.com/saromanov/antenna/structs/v1"
 	"github.com/saromanov/antenna/storage"
 )
 
@@ -26,4 +27,16 @@ func new(url string) (storage.Storage, error) {
 	return &influxDB{
 		client: client,
 	}, nil
+}
+
+// Add provides adding of stat
+func (i*influxDB) Add(metrics *structs.ContainerStat) error {
+	var points *[]influxdb.Point
+	if err := c.Write(points); err != nil {
+		return err
+	}
+	if err := c.Close(); err != nil {
+    	return err
+	}
+	return nil
 }
