@@ -12,7 +12,17 @@ type Storage interface {
 
 // New creates storage based on name
 // At the init stage, its supports only InfluxDB
-// So, "name" attribute is unused at this moment
-func New(name string) (Storage, error) {
+func New(conf *Config) (Storage, error) {
+	if conf.Name == "" || conf.Name == "influxdb" {
+
+	}
 	return nil, nil
+}
+
+// Config defines configuration for Storage init
+type Config struct {
+	Name     string
+	URL      string
+	Username string
+	Password string
 }

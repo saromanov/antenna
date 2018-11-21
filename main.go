@@ -2,6 +2,8 @@ package antenna
 
 import (
 	"flag"
+
+	"github.com/saromanov/antenna/storage"
 )
 
 var (
@@ -10,5 +12,7 @@ var (
 )
 
 func main() {
-
+	st := storage.New(&storage.Config{
+		Name: "influxdb",
+	})
 }
