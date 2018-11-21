@@ -10,15 +10,6 @@ type Storage interface {
 	Search() ([]*structs.ContainerStat, error)
 }
 
-// New creates storage based on name
-// At the init stage, its supports only InfluxDB
-func New(conf *Config) (Storage, error) {
-	if conf.Name == "" || conf.Name == "influxdb" {
-
-	}
-	return nil, nil
-}
-
 // Config defines configuration for Storage init
 type Config struct {
 	Name     string

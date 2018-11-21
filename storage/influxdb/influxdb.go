@@ -2,7 +2,7 @@ package influxdb
 
 import (
 	"sync"
-
+	"fmt"
 	influxdb "github.com/influxdb/influxdb/client"
 	"github.com/saromanov/antenna/structs/v1"
 	"github.com/saromanov/antenna/storage"
@@ -13,6 +13,17 @@ type influxDB struct {
 	database string
 	lock     sync.Mutex
 }
+
+// New creates storage based on name
+// At the init stage, its supports only InfluxDB
+func New(conf *Config) (Storage, error) {
+	if conf.Name == "" || conf.Name == "influxdb" {
+		return new(conf.URL)
+	}
+	return nil, fmt.Errorf("unable to create influxdb: %v", err)
+}
+
+
 
 func new(url string) (storage.Storage, error) {
 	config := &influxdb.Config{
