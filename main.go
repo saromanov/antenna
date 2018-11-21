@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	"github.com/saromanov/antenna/storage"
+	"github.com/saromanov/antenna/storage/influxdb"
 )
 
 var (
@@ -12,7 +13,7 @@ var (
 )
 
 func main() {
-	st := storage.New(&storage.Config{
-		Name: "influxdb",
+	st := influxdb.New(&storage.Config{
+		URL: "//",
 	})
 }
