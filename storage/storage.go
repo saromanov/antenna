@@ -2,6 +2,8 @@ package storage
 
 import structs "github.com/saromanov/antenna/structs/v1"
 
+// Storage defines main interface for Providing
+// handling of storage data
 type Storage interface {
 	Add(*structs.ContainerStat) error
 	Close() error
