@@ -44,6 +44,11 @@ func (i*influxDB) Add(metrics *structs.ContainerStat) error {
 }
 
 func (i*influxDB) toPoints(metrics *structs.ContainerStat)[]*influxdb.Point {
+	if len(metrics) == 0 {
+		return nil
+	}
+	points := []*influxdb.Point{}
+	points = append(points, makePoint("cpu", metrics.CPU)
 	return nil
 }
 
