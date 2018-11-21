@@ -17,10 +17,7 @@ type influxDB struct {
 // New creates storage based on name
 // At the init stage, its supports only InfluxDB
 func New(conf *Config) (Storage, error) {
-	if conf.Name == "" || conf.Name == "influxdb" {
-		return new(conf.URL)
-	}
-	return nil, fmt.Errorf("unable to create influxdb: %v", err)
+	return new(conf.URL)
 }
 
 
