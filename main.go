@@ -3,6 +3,7 @@ package antenna
 import (
 	"crypto/tls"
 	"flag"
+	"log"
 	"net/http"
 	"time"
 
@@ -21,10 +22,20 @@ func main() {
 	})
 }
 
-func createHTTPClient() http.Client {
+func createHTTPClient(cert, key string) http.Client {
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
 	}
+	if collectorCert != "" {
+		certData, err := tls.LoadX509KeyPair(collectorCert, collectorKey)
+		if err != nil {
+			log.Fatalf("Failed to use certs %v", err)
+		}
+
+		tlsConfig.Certificates = []tls.Certificate{certData}
+		tlsConfig.BuildNameToCertificate()
+	}
+
 	tr := &http.Transport{
 		IdleConnTimeout: 30 * time.Second,
 		TLSClientConfig: tlsConfig,
