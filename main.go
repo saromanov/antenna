@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/saromanov/antenna/antenna"
 	"github.com/saromanov/antenna/storage"
 	"github.com/saromanov/antenna/storage/influxdb"
 )
@@ -20,6 +21,12 @@ func main() {
 	st := influxdb.New(&storage.Config{
 		URL: "//",
 	})
+
+	client := createHTTPClient()
+
+	ant := antenna.Application{
+		client: client,
+	}
 }
 
 func createHTTPClient(cert, key string) http.Client {
