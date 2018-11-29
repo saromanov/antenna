@@ -6,9 +6,9 @@ import (
 )
 // Application provides definition of the main
 // interface for app
-type Application interface{
-	httpClient *http.Client 
-	Store: storage.Store,
+type Application struct {
+	httpClient http.Client
+	Store storage.Store
 }
 
 type antenna struct {
