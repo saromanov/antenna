@@ -3,7 +3,7 @@ package influxdb
 import (
 	"sync"
 	"fmt"
-	influxdb "github.com/influxdb/influxdb/client"
+	influxdb "github.com/influxdata/influxdb/client/v2"
 	"github.com/saromanov/antenna/structs/v1"
 	"github.com/saromanov/antenna/storage"
 )
