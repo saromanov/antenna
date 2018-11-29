@@ -15,7 +15,8 @@ var memoryTotalRegexp = regexp.MustCompile(`MemTotal:\s*([0-9]+) kB`)
 
 // Info provides definition for hardware info
 type Info struct {
-	CPUInfo string
+	CPUInfo        string
+	MemoryCapacity uint64
 }
 
 // GetNumberOfCores returns number of cores at machine
@@ -48,8 +49,13 @@ func GetInfo() (*Info, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unable to get cpu info: %v", err)
 	}
+	memCap, err := GetMemoryCapacity()
+	if err != nil {
+		return nil, fmt.Errorf("unable to get memory capacity: %v", err)
+	}
 	return &Info{
-		CPUInfo: string(cpuInfo),
+		CPUInfo:        string(cpuInfo),
+		MemoryCapacity: memCap,
 	}, nil
 }
 
