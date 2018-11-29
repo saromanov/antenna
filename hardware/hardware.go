@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -12,6 +13,11 @@ import (
 const procMem = "/proc/meminfo"
 
 var memoryTotalRegexp = regexp.MustCompile(`MemTotal:\s*([0-9]+) kB`)
+
+// Info provides definition for hardware info
+type Info struct {
+	CPUInfo string
+}
 
 // GetNumberOfCores returns number of cores at machine
 func GetNumberOfCores() int {
@@ -35,6 +41,17 @@ func GetMemoryCapacity() (uint64, error) {
 		return 0, err
 	}
 	return memoryCapacity, err
+}
+
+// GetInfo retruns machien info
+func GetInfo() (*Info, error) {
+	cpuInfo, err := ioutil.ReadFile(filepath.Join(rootFs, "/proc/cpuinfo"))
+	if err != nil {
+		return nil, fmt.Errorf("unable to get cpu info: %v", err)
+	}
+	return nil, &Info{
+		CPUinfo: cpuInfo,
+	}
 }
 
 // parse is a helpful method for parsing of values
