@@ -8,10 +8,12 @@ import (
 // interface for app
 type Application interface{
 	httpClient *http.Client 
+	Store: storage.Store,
 }
 
 type antenna struct {
 	store storage.Storage
+	httpClient *http.Client
 }
 
 func New()(Application, error){

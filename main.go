@@ -28,7 +28,6 @@ func main() {
 		client: client,
 	}
 }
-
 func createHTTPClient(cert, key string) http.Client {
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
