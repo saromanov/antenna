@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -45,13 +44,13 @@ func GetMemoryCapacity() (uint64, error) {
 
 // GetInfo retruns machien info
 func GetInfo() (*Info, error) {
-	cpuInfo, err := ioutil.ReadFile(filepath.Join(rootFs, "/proc/cpuinfo"))
+	cpuInfo, err := ioutil.ReadFile("/proc/cpuinfo")
 	if err != nil {
 		return nil, fmt.Errorf("unable to get cpu info: %v", err)
 	}
-	return nil, &Info{
-		CPUinfo: cpuInfo,
-	}
+	return &Info{
+		CPUInfo: string(cpuInfo),
+	}, nil
 }
 
 // parse is a helpful method for parsing of values
