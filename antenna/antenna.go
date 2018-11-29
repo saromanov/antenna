@@ -11,6 +11,10 @@ type Application struct {
 	Store storage.Store
 }
 
+// Start provides starting of the app
+func (a*Application) Start() error {
+	return nil
+}
 type antenna struct {
 	store storage.Storage
 	httpClient *http.Client
