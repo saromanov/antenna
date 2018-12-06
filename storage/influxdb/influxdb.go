@@ -49,6 +49,11 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	return nil
 }
 
+// Search provides searching of the stats by the query
+func (i *influxDB) Search() ([]*structs.ContainerStat, error {
+	return nil, nil
+}
+
 // Close provides closing of db instance
 func (i *influxDB) Close() error {
 	return i.client.Close()
