@@ -9,6 +9,10 @@ import (
 type Application struct {
 	httpClient http.Client
 	Store storage.Store
+	events chan *ContainerEvent
+}
+
+type ContainerEvent struct {
 }
 
 // Start provides starting of the app
