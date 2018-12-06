@@ -49,6 +49,11 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	return nil
 }
 
+// Close provides closing of db instance
+func (i *influxDB) Close() error {
+	i.client.Close()
+}
+
 func (i *influxDB) toPoints(metrics *structs.ContainerStat) []*client.Point {
 	if len(metrics) == 0 {
 		return nil
