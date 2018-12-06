@@ -27,6 +27,7 @@ func main() {
 	ant := antenna.Application{
 		client: client,
 	}
+	ant.Start()
 }
 func createHTTPClient(cert, key string) http.Client {
 	tlsConfig := &tls.Config{
