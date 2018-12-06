@@ -50,7 +50,7 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 }
 
 // Search provides searching of the stats by the query
-func (i *influxDB) Search() ([]*structs.ContainerStat, error {
+func (i *influxDB) Search() ([]*structs.ContainerStat) error {
 	return nil, nil
 }
 
