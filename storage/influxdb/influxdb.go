@@ -39,7 +39,6 @@ func new(conf *storage.Config) (storage.Storage, error) {
 func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	i.lock.Lock()
 	defer i.lock.Unlock()
-	var points []*client.Point
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
 		Database:  i.database,
 		Precision: "s",
@@ -74,12 +73,5 @@ func (i *influxDB) toPoints(metrics *structs.ContainerStat) []*client.Point {
 
 // makePoints provides method for making point for InfluxDB
 func makePoint(name string, value interface{}) *client.Point {
-	fields := map[string]interface{}{
-		"fieldValue": value,
-	}
-
-	return &client.Point{
-		Measurement: name,
-		Fields:      fields,
-	}
+	return nil
 }
