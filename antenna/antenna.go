@@ -14,19 +14,33 @@ type Application struct {
 	events     chan *ContainerEvent
 }
 
+// ContainerEventType provides definition for container event handling
+type ContainerEventType int
+
+const (
+	// ContainerAdd defines event for adding a new container
+	ContainerAdd ContainerEventType = iota + 1
+	// ContainerRemove defines event for removing old one container
+	ContainerRemove
+)
+
 // Container event defines events on containers
 type ContainerEvent struct {
+	event ContainerEventType
 }
 
 // Start provides starting of the app
 func (a *Application) Start() error {
+	go a.startEventWatcher()
 	return nil
 }
 
 func (a *Application) startEventWatcher() {
 	select {
 	case event := <-a.events:
+		if event.event == ContainerAdd {
 
+		}
 	}
 }
 
