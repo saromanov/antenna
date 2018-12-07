@@ -1,4 +1,4 @@
-package antenna
+package main
 
 import (
 	"crypto/tls"
