@@ -18,14 +18,18 @@ var (
 )
 
 func main() {
-	st := influxdb.New(&storage.Config{
+	st, err := influxdb.New(&storage.Config{
 		URL: "//",
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	client := createHTTPClient()
+	client := createHTTPClient("", "")
 
 	ant := antenna.Application{
-		client: client,
+		HTTPClient: client,
+		Store: st,
 	}
 	ant.Start()
 }
@@ -33,8 +37,8 @@ func createHTTPClient(cert, key string) http.Client {
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
 	}
-	if collectorCert != "" {
-		certData, err := tls.LoadX509KeyPair(collectorCert, collectorKey)
+	if cert != "" {
+		certData, err := tls.LoadX509KeyPair(cert, key)
 		if err != nil {
 			log.Fatalf("Failed to use certs %v", err)
 		}
@@ -47,7 +51,7 @@ func createHTTPClient(cert, key string) http.Client {
 		IdleConnTimeout: 30 * time.Second,
 		TLSClientConfig: tlsConfig,
 	}
-	return &http.Client{
+	return http.Client{
 		Transport: tr,
 		Timeout:   time.Second * 10,
 	}

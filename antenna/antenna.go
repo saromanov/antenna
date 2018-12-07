@@ -9,7 +9,7 @@ import (
 // Application provides definition of the main
 // interface for app
 type Application struct {
-	httpClient http.Client
+	HTTPClient http.Client
 	Store      storage.Storage
 	events     chan *ContainerEvent
 }
