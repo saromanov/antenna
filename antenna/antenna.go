@@ -24,7 +24,7 @@ const (
 	ContainerRemove
 )
 
-// Container event defines events on containers
+// ContainerEvent event defines events on containers
 type ContainerEvent struct {
 	event ContainerEventType
 }

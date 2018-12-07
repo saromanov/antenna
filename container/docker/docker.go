@@ -57,14 +57,20 @@ func (d *Docker) GetContainers() ([]*structs.Container, error) {
 
 }
 
+// Start provides starting of container by id
+func (d *Docker) Start(id string) error {
+	return d.client.StartContainer(id, docker.HostConfig{})
+}
+
 // Version returns current version of Docker API
-func (d *Docker) Version()([]string, error){
+func (d *Docker) Version() ([]string, error) {
 	ver, err := d.client.Version()
 	if err != nil {
 		return nil, fmt.Errorf("unable to get Docker version: %v", err)
 	}
 	return ver, nil
 }
+
 // toContainerList returns containers at inner representation
 func (d *Docker) toContainerList(cl []docker.APIContainer) ([]*structs.Container, error) {
 	containers := make([]*structs.Container, len(c))
