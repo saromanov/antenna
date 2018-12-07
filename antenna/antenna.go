@@ -8,7 +8,7 @@ import (
 // interface for app
 type Application struct {
 	httpClient http.Client
-	Store storage.Store
+	Store storage.Storage
 	events chan *ContainerEvent
 }
 
@@ -19,13 +19,21 @@ type ContainerEvent struct {
 func (a*Application) Start() error {
 	return nil
 }
+
+func (a*Application) startEventWatcher(){
+	select {
+	case event := <-self.events:
+		
+	}
+}
 type antenna struct {
 	store storage.Storage
 	httpClient *http.Client
 }
 
+// New provides initialization on the app
 func New()(Application, error){
-	return {
+	return Application{
 		store: nil,
 	}, nil
 }
