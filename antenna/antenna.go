@@ -1,8 +1,10 @@
 package antenna
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/saromanov/antenna/container/docker"
 	"github.com/saromanov/antenna/storage"
 )
 
@@ -31,10 +33,16 @@ type ContainerEvent struct {
 
 // Start provides starting of the app
 func (a *Application) Start() error {
+	a.connectToDocker()
 	go a.startEventWatcher()
 	return nil
 }
 
+// connectToDocker creates connection to docker via client
+func (a *Application) connectToDocker() {
+	client := docker.Init(nil)
+	fmt.Println(client)
+}
 func (a *Application) startEventWatcher() {
 	select {
 	case event := <-a.events:
