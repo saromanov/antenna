@@ -52,6 +52,6 @@ type antenna struct {
 // New provides initialization on the app
 func New() (Application, error) {
 	return Application{
-		store: nil,
+		Store: nil,
 	}, nil
 }
