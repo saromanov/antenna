@@ -3,33 +3,46 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/saromanov/antenna/antenna"
 	"github.com/saromanov/antenna/storage"
 	"github.com/saromanov/antenna/storage/influxdb"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
 	port               = flag.Int("port", 8080, "port")
 	prometheusEndpoint = flag.String("prometheus_endpoint", "/metrics", "Endpoint for export metrics")
+
+	logStage = "init"
 )
 
 func main() {
+	log.SetFormatter(&log.JSONFormatter{})
 	st, err := influxdb.New(&storage.Config{
 		URL: "//",
 	})
 	if err != nil {
-		log.Fatal(err)
+		log.WithFields(log.Fields{
+			"stage": logStage,
+		}).Fatalf("unable to init InfluxDB: %v", err)
 	}
+
+	log.WithFields(log.Fields{
+		"stage": logStage,
+	}).Info("init of HTTP client")
 
 	client := createHTTPClient("", "")
 
+	log.WithFields(log.Fields{
+		"stage": logStage,
+	}).Info("init of Antenna app")
+
 	ant := antenna.Application{
 		HTTPClient: client,
-		Store: st,
+		Store:      st,
 	}
 	ant.Start()
 }
