@@ -60,21 +60,18 @@ func (i *influxDB) Close() error {
 }
 
 func (i *influxDB) toPoints(metrics *structs.ContainerStat) []*client.Point {
-	if len(metrics) == 0 {
-		return nil
-	}
 	points := []*client.Point{}
-	points = append(points, makePoint("cpu", metrics.CPU))
+	points = append(points, makePoint("cpu", "1"))
 	return nil
 }
 
 // makePoints provides method for making point for InfluxDB
-func makePoint(name string, value interface{}) *influxdb.Point {
+func makePoint(name string, value interface{}) *client.Point {
 	fields := map[string]interface{}{
-		fieldValue: value,
+		"fieldValue": value,
 	}
 
-	return &influxdb.Point{
+	return &client.Point{
 		Measurement: name,
 		Fields:      fields,
 	}
