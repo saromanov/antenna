@@ -40,7 +40,14 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	i.lock.Lock()
 	defer i.lock.Unlock()
 	var points []*client.Point
-	if err := i.client.Write(points); err != nil {
+	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  i.database,
+		Precision: "s",
+	})
+	if err != nil {
+		return err
+	}
+	if err := i.client.Write(bp); err != nil {
 		return err
 	}
 	if err := i.client.Close(); err != nil {
