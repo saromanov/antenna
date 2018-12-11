@@ -11,7 +11,7 @@ type watcher struct {
 }
 
 func (w*watcher) Watch() {
-	containers, err := w.dockerClient.GetContainers()
+	containers, err := w.dockerClient.GetContainers(nil)
 	if err != nil {
 		fmt.Printf("unable to get list of containers: %v\n", err)
 	}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/saromanov/antenna/container/docker"
 	"github.com/saromanov/antenna/storage"
+	structs "github.com/saromanov/antenna/structs/v1"
 )
 
 // Application provides definition of the main
@@ -40,7 +41,7 @@ func (a *Application) Start() error {
 
 // connectToDocker creates connection to docker via client
 func (a *Application) connectToDocker() {
-	client := docker.Init(nil)
+	client := docker.Init(&structs.ClientContainerConfig{})
 	fmt.Println(client)
 }
 
