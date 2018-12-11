@@ -1,7 +1,6 @@
 package antenna
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/saromanov/antenna/container/docker"
@@ -12,9 +11,10 @@ import (
 // Application provides definition of the main
 // interface for app
 type Application struct {
-	HTTPClient http.Client
-	Store      storage.Storage
-	events     chan *ContainerEvent
+	HTTPClient   http.Client
+	Store        storage.Storage
+	events       chan *ContainerEvent
+	dockerClient *docker.Docker
 }
 
 // ContainerEventType provides definition for container event handling
@@ -43,7 +43,7 @@ func (a *Application) Start() error {
 // connectToDocker creates connection to docker via client
 func (a *Application) connectToDocker() {
 	client := docker.Init(&structs.ClientContainerConfig{})
-	fmt.Println(client)
+	a.dockerClient = client
 }
 
 func (a *Application) addContainer() {
