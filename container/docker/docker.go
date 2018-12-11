@@ -18,6 +18,9 @@ type Docker struct {
 
 // Init provides initialization of the docker
 func Init(conf *structs.ClientContainerConfig) *Docker {
+	if conf == nil {
+		panic("Client container Config is nil")
+	}
 	endpoint := conf.Endpoint
 	if endpoint == "" {
 		endpoint = defaultEndpoint
