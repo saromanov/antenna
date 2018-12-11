@@ -57,6 +57,11 @@ func (d *Docker) GetContainers() ([]*structs.Container, error) {
 
 }
 
+// Name returns name of container type
+func (d *Docker) Name() string {
+	return "docker"
+}
+
 // Start provides starting of container by id
 func (d *Docker) Start(id string) error {
 	return d.client.StartContainer(id, docker.HostConfig{})

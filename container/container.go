@@ -8,4 +8,5 @@ type Container interface {
 	Start() error
 	Stop() error
 	GetStats() *structs.ContainerStat
+	Name() string
 }
