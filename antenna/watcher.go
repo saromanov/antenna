@@ -2,15 +2,17 @@ package antenna
 
 import (
 	"fmt"
+
 	"github.com/saromanov/antenna/container/docker"
 )
-// watcher creates object for watch running containers
+
+// containerWatcher creates object for watch running containers
 // and gettign info from this
-type watcher struct {
+type containerWatcher struct {
 	dockerClient *docker.Docker
 }
 
-func (w*watcher) Watch() {
+func (w *containerWatcher) Watch() {
 	containers, err := w.dockerClient.GetContainers(nil)
 	if err != nil {
 		fmt.Printf("unable to get list of containers: %v\n", err)
