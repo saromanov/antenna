@@ -34,6 +34,7 @@ type ContainerEvent struct {
 
 // Start provides starting of the app
 func (a *Application) Start() error {
+	a.events = make(chan *ContainerEvent)
 	a.connectToDocker()
 	go a.startEventWatcher()
 	return nil
