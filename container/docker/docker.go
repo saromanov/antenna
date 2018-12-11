@@ -57,7 +57,7 @@ func (d *Docker) GetContainers(opt *structs.ListContainersOptions) ([]*structs.C
 	if err != nil {
 		return nil, fmt.Errorf("unable to get list of containers: %v", err)
 	}
-	cont, err := d.toContainerList()
+	cont, err := d.toContainerList(containers)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (d *Docker) Name() string {
 
 // Start provides starting of container by id
 func (d *Docker) Start(id string) error {
-	return d.client.StartContainer(id, docker.HostConfig{})
+	return d.client.StartContainer(id, &docker.HostConfig{})
 }
 
 // Version returns current version of Docker API
@@ -85,16 +85,16 @@ func (d *Docker) Version() (string, error) {
 }
 
 // toContainerList returns containers at inner representation
-func (d *Docker) toContainerList(cl []docker.APIContainer) ([]*structs.Container, error) {
-	containers := make([]*structs.Container, len(c))
+func (d *Docker) toContainerList(cl []docker.APIContainers) ([]*structs.Container, error) {
+	containers := make([]*structs.Container, len(cl))
 	for i, cont := range cl {
 		containers[i] = d.toContainer(cont)
 	}
-	return nil, containers
+	return containers, nil
 }
 
 // toContainer retrurns container at inner representation
-func (d *Docker) toContainer(c docker.APIContainer) *structs.Container {
+func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 	return &structs.Container{
 		Image:  c.Image,
 		Names:  c.Names,
