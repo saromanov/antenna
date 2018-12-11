@@ -76,12 +76,12 @@ func (d *Docker) Start(id string) error {
 }
 
 // Version returns current version of Docker API
-func (d *Docker) Version() ([]string, error) {
+func (d *Docker) Version() (string, error) {
 	ver, err := d.client.Version()
 	if err != nil {
-		return nil, fmt.Errorf("unable to get Docker version: %v", err)
+		return "", fmt.Errorf("unable to get Docker version: %v", err)
 	}
-	return ver, nil
+	return ver.Get("version"), nil
 }
 
 // toContainerList returns containers at inner representation
