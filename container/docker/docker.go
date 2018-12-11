@@ -13,7 +13,7 @@ const defaultEndpoint = "unix:///var/run/docker.sock"
 // Docker provides implementation of the Docker
 // logic
 type Docker struct {
-	client *Client
+	client *docker.Client
 }
 
 // Init provides initialization of the docker
@@ -44,8 +44,8 @@ func createDockerClient(conf *structs.ClientContainerConfig) (*docker.Client, er
 }
 
 // GetContainers returns list of containers
-func (d *Docker) GetContainers() ([]*structs.Container, error) {
-	containers, err := d.client.ListContainers()
+func (d *Docker) GetContainers(opt structs.ListContanersOptions) ([]*structs.Container, error) {
+	containers, err := d.client.ListContainers(opt)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get list of containers: %v", err)
 	}
