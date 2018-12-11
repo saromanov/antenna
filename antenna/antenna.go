@@ -15,6 +15,7 @@ type Application struct {
 	Store        storage.Storage
 	events       chan *ContainerEvent
 	dockerClient *docker.Docker
+	watcher      *containerWatcher
 }
 
 // ContainerEventType provides definition for container event handling
@@ -36,6 +37,10 @@ type ContainerEvent struct {
 func (a *Application) Start() error {
 	a.events = make(chan *ContainerEvent)
 	a.connectToDocker()
+	a.watcher = &containerWatcher{
+		dockerClient: a.dockerClient,
+	}
+	a.watcher.Watch()
 	go a.startEventWatcher()
 	return nil
 }
