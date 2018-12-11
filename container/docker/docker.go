@@ -48,15 +48,19 @@ func createDockerClient(conf *structs.ClientContainerConfig) (*docker.Client, er
 
 // GetContainers returns list of containers
 func (d *Docker) GetContainers(opt *structs.ListContainersOptions) ([]*structs.Container, error) {
-	containers, err := d.client.ListContainers(docker.ListContainersOptions{
-		All:     opt.All,
-		Size:    opt.Size,
-		Limit:   opt.Limit,
-		Before:  opt.Before,
-		Since:   opt.Since,
-		Filters: opt.Filters,
-		Context: opt.Context,
-	})
+	dopt := docker.ListContainersOptions{}
+	if opt != nil {
+		dopt = docker.ListContainersOptions{
+			All:     opt.All,
+			Size:    opt.Size,
+			Limit:   opt.Limit,
+			Before:  opt.Before,
+			Since:   opt.Since,
+			Filters: opt.Filters,
+			Context: opt.Context,
+		}
+	}
+	containers, err := d.client.ListContainers(dopt)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get list of containers: %v", err)
 	}
