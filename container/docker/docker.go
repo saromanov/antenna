@@ -107,5 +107,8 @@ func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 		Names:  c.Names,
 		Status: c.Status,
 		State:  c.State,
+		SizeRw: c.SizeRw,
+		SizeRootFs: c.SizeRootFs,
+		Labels: c.Labels,
 	}
 }
