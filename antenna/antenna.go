@@ -43,12 +43,24 @@ func (a *Application) connectToDocker() {
 	client := docker.Init(nil)
 	fmt.Println(client)
 }
+
+func (a *Application) addContainer() {
+
+}
+
+func (a *Application) removeContainer() {
+
+}
 func (a *Application) startEventWatcher() {
 	select {
 	case event := <-a.events:
-		if event.event == ContainerAdd {
-
+		switch event.event {
+		case ContainerAdd:
+			a.addContainer()
+		case ContainerRemove:
+			a.removeContainer()
 		}
+
 	}
 }
 
