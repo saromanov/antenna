@@ -27,7 +27,11 @@ type ListContainersOptions struct {
 
 // StartContainerOptions defines options for start container
 type StartContainerOptions struct {
-	ID string 
+	ID string
+}
+
+// ContainerInfo returns info about running container
+type ContainerInfo struct {
 }
 
 // Container define struct for container representation

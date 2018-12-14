@@ -77,8 +77,13 @@ type antenna struct {
 }
 
 // New provides initialization on the app
-func New() (Application, error) {
-	return Application{
+func New() (*Application, error) {
+	return &Application{
 		Store: nil,
 	}, nil
+}
+
+// GetContainerInfo returns info about running container
+func (a *Application) GetContainerInfo(name string) (*structs.ContainerInfo, error) {
+	return nil, nil
 }
