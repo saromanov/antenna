@@ -25,6 +25,11 @@ type ListContainersOptions struct {
 	Context context.Context
 }
 
+// StartContainerOptions defines options for start container
+type StartContainerOptions struct {
+	ID string 
+}
+
 // Container define struct for container representation
 type Container struct {
 	CreatedTime time.Time         `json:"created_time,omitempty"`
