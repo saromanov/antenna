@@ -1,7 +1,9 @@
 package antenna
 
 import (
+	"fmt"
 	"net/http"
+	"sync"
 
 	"github.com/saromanov/antenna/container/docker"
 	"github.com/saromanov/antenna/storage"
@@ -11,11 +13,18 @@ import (
 // Application provides definition of the main
 // interface for app
 type Application struct {
-	HTTPClient   http.Client
-	Store        storage.Storage
-	events       chan *ContainerEvent
-	dockerClient *docker.Docker
-	watcher      *containerWatcher
+	HTTPClient     http.Client
+	Store          storage.Storage
+	events         chan *ContainerEvent
+	dockerClient   *docker.Docker
+	watcher        *containerWatcher
+	containers     map[string]containerInfo
+	containersLock *sync.RWMutex
+}
+
+type containerInfo struct {
+	Name string
+	ID   string
 }
 
 // ContainerEventType provides definition for container event handling
@@ -79,11 +88,23 @@ type antenna struct {
 // New provides initialization on the app
 func New() (*Application, error) {
 	return &Application{
-		Store: nil,
+		Store:          nil,
+		containersLock: &sync.RWMutex{},
+		containers:     make(map[string]containerInfo),
 	}, nil
 }
 
 // GetContainerInfo returns info about running container
 func (a *Application) GetContainerInfo(name string) (*structs.ContainerInfo, error) {
-	return nil, nil
+	var cont containerInfo
+	var ok bool
+	func() {
+		a.containersLock.RLock()
+		defer a.containersLock.RUnlock()
+		cont, ok = a.containers[name]
+	}()
+	if !ok {
+		return nil, fmt.Errorf("unknown container %q", name)
+	}
+	return &structs.ContainerInfo{}, nil
 }
