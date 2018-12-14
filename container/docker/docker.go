@@ -78,8 +78,11 @@ func (d *Docker) Name() string {
 }
 
 // Start provides starting of container by id
-func (d *Docker) Start(id string) error {
-	return d.client.StartContainer(id, &docker.HostConfig{})
+func (d *Docker) Start(opt *structs.StartContainerOptions) error {
+	if opt.ID == "" {
+		return errIDNotDefined
+	}
+	return d.client.StartContainer(opt.ID, &docker.HostConfig{})
 }
 
 // Version returns current version of Docker API
@@ -103,12 +106,12 @@ func (d *Docker) toContainerList(cl []docker.APIContainers) ([]*structs.Containe
 // toContainer retrurns container at inner representation
 func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 	return &structs.Container{
-		Image:  c.Image,
-		Names:  c.Names,
-		Status: c.Status,
-		State:  c.State,
-		SizeRw: c.SizeRw,
+		Image:      c.Image,
+		Names:      c.Names,
+		Status:     c.Status,
+		State:      c.State,
+		SizeRw:     c.SizeRw,
 		SizeRootFs: c.SizeRootFs,
-		Labels: c.Labels,
+		Labels:     c.Labels,
 	}
 }
