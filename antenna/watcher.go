@@ -16,6 +16,7 @@ func (w *containerWatcher) Watch() {
 	containers, err := w.dockerClient.GetContainers(nil)
 	if err != nil {
 		fmt.Printf("unable to get list of containers: %v\n", err)
+		return
 	}
 
 	fmt.Println("Containers: ", containers)
