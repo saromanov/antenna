@@ -43,6 +43,7 @@ const (
 type ContainerEvent struct {
 	event      ContainerEventType
 	containers []*structs.Container
+	name       string
 }
 
 // Start provides starting of the app
@@ -67,15 +68,17 @@ func (a *Application) connectToDocker() {
 }
 
 func (a *Application) addContainer() {
-
 }
 
-func (a *Application) removeContainer() {
-
+func (a *Application) removeContainer(name string) {
+	func() {
+		a.containersLock.RLock()
+		defer a.containersLock.RUnlock()
+		delete(a.containers, name)
+	}()
 }
 
 func (a *Application) processListContainers(containers []*structs.Container) {
-	fmt.Println("List containers")
 	a.containersLock.RLock()
 	defer a.containersLock.RUnlock()
 	for _, c := range containers {
@@ -91,7 +94,7 @@ func (a *Application) startEventWatcher() {
 			case ContainerAdd:
 				a.addContainer()
 			case ContainerRemove:
-				a.removeContainer()
+				a.removeContainer(event.name)
 			case ListContainers:
 				a.processListContainers(event.containers)
 			}
