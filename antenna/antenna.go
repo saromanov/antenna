@@ -35,11 +35,14 @@ const (
 	ContainerAdd ContainerEventType = iota + 1
 	// ContainerRemove defines event for removing old one container
 	ContainerRemove
+	// ListContainers returns list of running containers
+	ListContainers
 )
 
 // ContainerEvent event defines events on containers
 type ContainerEvent struct {
-	event ContainerEventType
+	event      ContainerEventType
+	containers []*structs.Container
 }
 
 // Start provides starting of the app
@@ -67,6 +70,11 @@ func (a *Application) addContainer() {
 func (a *Application) removeContainer() {
 
 }
+
+func (a *Application) processListContainers(containers []*structs.Container) {
+
+}
+
 func (a *Application) startEventWatcher() {
 	select {
 	case event := <-a.events:
@@ -75,6 +83,8 @@ func (a *Application) startEventWatcher() {
 			a.addContainer()
 		case ContainerRemove:
 			a.removeContainer()
+		case ListContainers:
+			a.processListContainers(event.containers)
 		}
 
 	}
