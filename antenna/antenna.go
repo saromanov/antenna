@@ -55,7 +55,7 @@ func (a *Application) Start() error {
 		dockerClient: a.dockerClient,
 		events:       a.events,
 	}
-	a.watcher.Watch()
+	go a.watcher.Watch()
 	a.startEventWatcher()
 	return nil
 }
@@ -75,23 +75,28 @@ func (a *Application) removeContainer() {
 }
 
 func (a *Application) processListContainers(containers []*structs.Container) {
+	fmt.Println("List containers")
+	a.containersLock.RLock()
+	defer a.containersLock.RUnlock()
 	for _, c := range containers {
 		a.containers[c.Name] = c
 	}
 }
 
 func (a *Application) startEventWatcher() {
-	select {
-	case event := <-a.events:
-		switch event.event {
-		case ContainerAdd:
-			a.addContainer()
-		case ContainerRemove:
-			a.removeContainer()
-		case ListContainers:
-			a.processListContainers(event.containers)
-		}
+	for {
+		select {
+		case event := <-a.events:
+			switch event.event {
+			case ContainerAdd:
+				a.addContainer()
+			case ContainerRemove:
+				a.removeContainer()
+			case ListContainers:
+				a.processListContainers(event.containers)
+			}
 
+		}
 	}
 }
 
