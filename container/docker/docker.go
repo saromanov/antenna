@@ -72,6 +72,18 @@ func (d *Docker) GetContainers(opt *structs.ListContainersOptions) ([]*structs.C
 
 }
 
+// GetStats returns stat for container
+func (d *Docker) GetStats(id string) *structs.ContainerStat {
+	statsC := make(chan *docker.Stats)
+	d.client.Stats(docker.StatsOptions{
+		ID:     id,
+		Stream: false,
+		Stats:  statsC,
+	})
+	stats, _ := <-statsC
+	return d.toStats(stats)
+}
+
 // Name returns name of container type
 func (d *Docker) Name() string {
 	return "docker"
@@ -114,4 +126,8 @@ func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 		SizeRootFs: c.SizeRootFs,
 		Labels:     c.Labels,
 	}
+}
+
+func (d *Docker) toStats(s *docker.Stats) *structs.ContainerStat {
+	return &structs.ContainerStat{}
 }
