@@ -48,6 +48,8 @@ type ContainerEvent struct {
 // Start provides starting of the app
 func (a *Application) Start() error {
 	a.events = make(chan *ContainerEvent)
+	a.containersLock = &sync.RWMutex{}
+	a.containers = make(map[string]*structs.Container)
 	a.connectToDocker()
 	a.watcher = &containerWatcher{
 		dockerClient: a.dockerClient,
