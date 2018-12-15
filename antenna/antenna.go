@@ -18,7 +18,7 @@ type Application struct {
 	events         chan *ContainerEvent
 	dockerClient   *docker.Docker
 	watcher        *containerWatcher
-	containers     map[string]containerInfo
+	containers     map[string]*structs.Container
 	containersLock *sync.RWMutex
 }
 
@@ -73,7 +73,9 @@ func (a *Application) removeContainer() {
 }
 
 func (a *Application) processListContainers(containers []*structs.Container) {
-	fmt.Println("LIST containers")
+	for _, c := range containers {
+		a.containers[c.Name] = c
+	}
 }
 
 func (a *Application) startEventWatcher() {
@@ -101,13 +103,13 @@ func New() (*Application, error) {
 	return &Application{
 		Store:          nil,
 		containersLock: &sync.RWMutex{},
-		containers:     make(map[string]containerInfo),
+		containers:     make(map[string]*structs.Container),
 	}, nil
 }
 
 // GetContainerInfo returns info about running container
-func (a *Application) GetContainerInfo(name string) (*structs.ContainerInfo, error) {
-	var cont containerInfo
+func (a *Application) GetContainerInfo(name string) (*structs.Container, error) {
+	var cont *structs.Container
 	var ok bool
 	func() {
 		a.containersLock.RLock()
@@ -117,5 +119,5 @@ func (a *Application) GetContainerInfo(name string) (*structs.ContainerInfo, err
 	if !ok {
 		return nil, fmt.Errorf("unknown container %q", name)
 	}
-	return &structs.ContainerInfo{}, nil
+	return cont, nil
 }
