@@ -51,6 +51,7 @@ func (a *Application) Start() error {
 	a.connectToDocker()
 	a.watcher = &containerWatcher{
 		dockerClient: a.dockerClient,
+		events:       a.events,
 	}
 	a.watcher.Watch()
 	a.startEventWatcher()
@@ -72,7 +73,7 @@ func (a *Application) removeContainer() {
 }
 
 func (a *Application) processListContainers(containers []*structs.Container) {
-
+	fmt.Println("LIST containers")
 }
 
 func (a *Application) startEventWatcher() {
