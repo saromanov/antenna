@@ -18,6 +18,7 @@ func (w *containerWatcher) Watch() {
 	c.AddFunc("@every 5s", func() {
 		w.getContainers()
 	})
+	c.Start()
 }
 
 func (w *containerWatcher) getContainers() {

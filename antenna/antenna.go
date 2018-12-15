@@ -50,7 +50,7 @@ func (a *Application) Start() error {
 		dockerClient: a.dockerClient,
 	}
 	a.watcher.Watch()
-	go a.startEventWatcher()
+	a.startEventWatcher()
 	return nil
 }
 
