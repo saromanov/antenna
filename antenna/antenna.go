@@ -93,6 +93,8 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	defer a.containersLock.RUnlock()
 	oldSize := len(a.containers)
 	for _, c := range containers {
+		container, _ := a.dockerClient.GetContainer(c.ID)
+		fmt.Println(container)
 		a.containers[c.Name] = c
 	}
 	if oldSize < len(a.containers) {

@@ -36,6 +36,7 @@ type ContainerInfo struct {
 
 // Container define struct for container representation
 type Container struct {
+	ID           string            `json:"ID"`
 	CreatedTime  time.Time         `json:"created_time,omitempty"`
 	Name         string            `json:"name,omitempty"`
 	State        string            `json:"state,omitempty"`

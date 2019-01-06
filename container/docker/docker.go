@@ -130,6 +130,7 @@ func (d *Docker) toContainerList(cl []docker.APIContainers) ([]*structs.Containe
 // toContainer retrurns container at inner representation
 func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 	return &structs.Container{
+		ID:         c.ID,
 		Image:      c.Image,
 		Names:      c.Names,
 		Status:     c.Status,
@@ -144,6 +145,7 @@ func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 // library into inner representation of container
 func (d *Docker) fromInspectContainer(c *docker.Container) *structs.Container {
 	return &structs.Container{
+		ID:           c.ID,
 		Image:        c.Image,
 		Name:         c.Name,
 		Status:       c.State.Status,
