@@ -67,6 +67,11 @@ func (a *Application) connectToDocker() {
 	a.dockerClient = client
 }
 
+// getContainers returns map of containers
+func (a *Application) getContainers() map[string]*structs.Container {
+	return a.containers
+}
+
 func (a *Application) addContainer() {
 }
 
