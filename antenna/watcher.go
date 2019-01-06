@@ -27,7 +27,7 @@ func (w *containerWatcher) Watch() {
 }
 
 func (w *containerWatcher) getContainers() []*structs.Container {
-	containers, err := w.dockerClient.GetContainers(nil)
+	containers, err := w.dockerClient.List(nil)
 	if err != nil {
 		fmt.Printf("unable to get list of containers: %v\n", err)
 		return nil

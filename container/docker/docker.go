@@ -46,8 +46,8 @@ func createDockerClient(conf *structs.ClientContainerConfig) (*docker.Client, er
 	return docker.NewClient(conf.Endpoint)
 }
 
-// GetContainers returns list of containers
-func (d *Docker) GetContainers(opt *structs.ListContainersOptions) ([]*structs.Container, error) {
+// List returns list of containers
+func (d *Docker) List(opt *structs.ListContainersOptions) ([]*structs.Container, error) {
 	dopt := docker.ListContainersOptions{}
 	if opt != nil {
 		dopt = docker.ListContainersOptions{
@@ -97,8 +97,8 @@ func (d *Docker) Start(opt *structs.StartContainerOptions) error {
 	return d.client.StartContainer(opt.ID, &docker.HostConfig{})
 }
 
-// GetContainer provides getting of container data by id
-func (d *Docker) GetContainer(id string) (*structs.Container, error) {
+// Get provides getting of container data by id
+func (d *Docker) Get(id string) (*structs.Container, error) {
 	if id == "" {
 		return nil, errIDNotDefined
 	}
