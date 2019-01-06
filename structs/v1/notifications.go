@@ -1,4 +1,4 @@
-package structs
+package v1
 
 // Notification defines payload for sending notifications
 type Notification struct {
