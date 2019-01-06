@@ -37,21 +37,21 @@ type ContainerInfo struct {
 // Container define struct for container representation
 type Container struct {
 	CreatedTime  time.Time         `json:"created_time,omitempty"`
-	Name         string            `json:"name"`
-	State        string            `json:"state"`
-	Status       string            `json:"status"`
-	Image        string            `json:"image"`
-	Names        []string          `json:"names"`
-	SizeRw       int64             `json:"size_rw"`
-	SizeRootFs   int64             `json:"size_root_fs"`
-	Labels       map[string]string `json:"labels"`
-	RestartCount int               `json:"restart_count"`
-	Running      bool              `json:"running"`
-	Paused       bool              `json:"paused"`
-	Restarting   bool              `json:"restarting"`
-	OOMKilled    bool              `json:"oom_killed"`
-	Error        string            `json:"error"`
-	Args         []string          `json:"args"`
+	Name         string            `json:"name,omitempty"`
+	State        string            `json:"state,omitempty"`
+	Status       string            `json:"status,omitempty"`
+	Image        string            `json:"image,omitempty"`
+	Names        []string          `json:"names,omitempty"`
+	SizeRw       int64             `json:"size_rw,omitempty"`
+	SizeRootFs   int64             `json:"size_root_fs,omitempty"`
+	Labels       map[string]string `json:"labels,omitempty"`
+	RestartCount int               `json:"restart_count,omitempty"`
+	Running      bool              `json:"running,omitempty"`
+	Paused       bool              `json:"paused,omitempty"`
+	Restarting   bool              `json:"restarting,omitempty"`
+	OOMKilled    bool              `json:"oom_killed,omitempty"`
+	Error        string            `json:"error,omitempty"`
+	Args         []string          `json:"args,omitempty"`
 }
 
 // ContainerStat provides definition for statistics
