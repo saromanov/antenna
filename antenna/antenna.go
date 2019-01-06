@@ -91,17 +91,35 @@ func (a *Application) removeContainer(name string) {
 func (a *Application) processListContainers(containers []*structs.Container) {
 	a.containersLock.RLock()
 	defer a.containersLock.RUnlock()
-	oldSize := len(a.containers)
+	old := a.containers
 	for _, c := range containers {
 		container, _ := a.dockerClient.Get(c.ID)
-		fmt.Println(container)
+		fmt.Println(container.Name, container.Running)
 		a.containers[c.Name] = c
 	}
-	if oldSize < len(a.containers) {
+
+	go func(p, n map[string]*structs.Container) {
+		if len(old) > len(a.containers) {
+			for _, c := range old {
+				found := false
+				for _, c2 := range a.containers {
+					if c.ID == c2.ID {
+						found = true
+						break
+					}
+				}
+				if !found {
+					fmt.Println("Container was removed: ", c.ID)
+				}
+			}
+		}
+		return
+	}(old, a.containers)
+	/*if oldSize < len(a.containers) {
 		a.events <- &ContainerEvent{
 			event: ContainerAdd,
 		}
-	}
+	}*/
 }
 
 func (a *Application) startEventWatcher() {
