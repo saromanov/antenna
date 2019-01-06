@@ -72,7 +72,9 @@ func (a *Application) getContainers() map[string]*structs.Container {
 	return a.containers
 }
 
+// addContainer creating of the event after adding of the new container
 func (a *Application) addContainer() {
+	fmt.Println("Adding container")
 }
 
 func (a *Application) removeContainer(name string) {
@@ -86,8 +88,14 @@ func (a *Application) removeContainer(name string) {
 func (a *Application) processListContainers(containers []*structs.Container) {
 	a.containersLock.RLock()
 	defer a.containersLock.RUnlock()
+	oldSize := len(a.containers)
 	for _, c := range containers {
 		a.containers[c.Name] = c
+	}
+	if oldSize < len(a.containers) {
+		a.events <- &ContainerEvent{
+			event: ContainerAdd,
+		}
 	}
 }
 
