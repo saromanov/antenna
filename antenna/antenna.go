@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/saromanov/antenna/container/docker"
 	"github.com/saromanov/antenna/storage"
@@ -20,6 +21,7 @@ type Application struct {
 	watcher        *containerWatcher
 	containers     map[string]*structs.Container
 	containersLock *sync.RWMutex
+	startTime      time.Time
 }
 
 type containerInfo struct {
@@ -48,6 +50,7 @@ type ContainerEvent struct {
 
 // Start provides starting of the app
 func (a *Application) Start() error {
+	a.startTime = time.Now().UTC()
 	a.events = make(chan *ContainerEvent)
 	a.containersLock = &sync.RWMutex{}
 	a.containers = make(map[string]*structs.Container)
