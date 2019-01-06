@@ -97,6 +97,18 @@ func (d *Docker) Start(opt *structs.StartContainerOptions) error {
 	return d.client.StartContainer(opt.ID, &docker.HostConfig{})
 }
 
+// GetContainer provides getting of container data by id
+func (d *Docker) GetContainer(id string) (*structs.Container, error) {
+	if id == "" {
+		return errIDNotDefined
+	}
+	container, err := d.client.InspectContainer()
+	if err != nil {
+		return nil, fmt.Errorf("unable to inspect container: %v", err)
+	}
+	return fromInspectContainer(container), nil
+}
+
 // Version returns current version of Docker API
 func (d *Docker) Version() (string, error) {
 	ver, err := d.client.Version()
