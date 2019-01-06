@@ -46,6 +46,12 @@ type Container struct {
 	SizeRootFs   int64             `json:"size_root_fs"`
 	Labels       map[string]string `json:"labels"`
 	RestartCount int               `json:"restart_count"`
+	Running      bool              `json:"running"`
+	Paused       bool              `json:"paused"`
+	Restarting   bool              `json:"restarting"`
+	OOMKilled    bool              `json:"oom_killed"`
+	Error        string            `json:"error"`
+	Args         []string          `json:"args"`
 }
 
 // ContainerStat provides definition for statistics

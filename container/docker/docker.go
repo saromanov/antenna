@@ -140,16 +140,21 @@ func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 	}
 }
 
+// fromInspectContainer provides converting of Conteiner type from Docker
+// library into inner representation of container
 func (d *Docker) fromInspectContainer(c *docker.Container) *structs.Container {
 	return &structs.Container{
 		Image:        c.Image,
 		Name:         c.Name,
-		Status:       c.Status,
-		State:        c.State,
-		SizeRw:       c.SizeRw,
-		SizeRootFs:   c.SizeRootFs,
-		Created:      c.CreatedTime,
+		Status:       c.State.Status,
+		CreatedTime:  c.Created,
 		RestartCount: c.RestartCount,
+		Running:      c.State.Running,
+		Paused:       c.State.Paused,
+		Restarting:   c.State.Restarting,
+		OOMKilled:    c.State.OOMKilled,
+		Error:        c.State.Error,
+		Args:         c.Args,
 	}
 }
 
