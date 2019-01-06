@@ -142,13 +142,14 @@ func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
 
 func (d *Docker) fromInspectContainer(c *docker.Container) *structs.Container {
 	return &structs.Container{
-		Image:      c.Image,
-		Names:      c.Names,
-		Status:     c.Status,
-		State:      c.State,
-		SizeRw:     c.SizeRw,
-		SizeRootFs: c.SizeRootFs,
-		Labels:     c.Labels,
+		Image:        c.Image,
+		Name:         c.Name,
+		Status:       c.Status,
+		State:        c.State,
+		SizeRw:       c.SizeRw,
+		SizeRootFs:   c.SizeRootFs,
+		Created:      c.CreatedTime,
+		RestartCount: c.RestartCount,
 	}
 }
 

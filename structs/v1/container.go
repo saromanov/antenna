@@ -36,15 +36,16 @@ type ContainerInfo struct {
 
 // Container define struct for container representation
 type Container struct {
-	CreatedTime time.Time         `json:"created_time,omitempty"`
-	Name        string            `json:"name"`
-	State       string            `json:"state"`
-	Status      string            `json:"status"`
-	Image       string            `json:"image"`
-	Names       []string          `json:"names"`
-	SizeRw      int64             `json:"size_rw"`
-	SizeRootFs  int64             `json:"size_root_fs"`
-	Labels      map[string]string `json:"labels"`
+	CreatedTime  time.Time         `json:"created_time,omitempty"`
+	Name         string            `json:"name"`
+	State        string            `json:"state"`
+	Status       string            `json:"status"`
+	Image        string            `json:"image"`
+	Names        []string          `json:"names"`
+	SizeRw       int64             `json:"size_rw"`
+	SizeRootFs   int64             `json:"size_root_fs"`
+	Labels       map[string]string `json:"labels"`
+	RestartCount int               `json:"restart_count"`
 }
 
 // ContainerStat provides definition for statistics
