@@ -100,13 +100,13 @@ func (d *Docker) Start(opt *structs.StartContainerOptions) error {
 // GetContainer provides getting of container data by id
 func (d *Docker) GetContainer(id string) (*structs.Container, error) {
 	if id == "" {
-		return errIDNotDefined
+		return nil, errIDNotDefined
 	}
-	container, err := d.client.InspectContainer()
+	container, err := d.client.InspectContainer(id)
 	if err != nil {
 		return nil, fmt.Errorf("unable to inspect container: %v", err)
 	}
-	return fromInspectContainer(container), nil
+	return d.fromInspectContainer(container), nil
 }
 
 // Version returns current version of Docker API
@@ -129,6 +129,18 @@ func (d *Docker) toContainerList(cl []docker.APIContainers) ([]*structs.Containe
 
 // toContainer retrurns container at inner representation
 func (d *Docker) toContainer(c docker.APIContainers) *structs.Container {
+	return &structs.Container{
+		Image:      c.Image,
+		Names:      c.Names,
+		Status:     c.Status,
+		State:      c.State,
+		SizeRw:     c.SizeRw,
+		SizeRootFs: c.SizeRootFs,
+		Labels:     c.Labels,
+	}
+}
+
+func (d *Docker) fromInspectContainer(c *docker.Container) *structs.Container {
 	return &structs.Container{
 		Image:      c.Image,
 		Names:      c.Names,
