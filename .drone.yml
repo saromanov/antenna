@@ -11,6 +11,3 @@ steps:
     commands:
       - go test -v .
       - go vet
-
-depends_on:
-  - testing
