@@ -81,20 +81,8 @@ func (d *Docker) GetStats(id string) *structs.ContainerStat {
 		}
 	}()
 	stats := <-statsC
-	resp := &structs.ContainerStat{
-		CPU: structs.CPUStat{
-			TotalUsage:     stats.CPUStats.CPUUsage.TotalUsage,
-			OnlineCPUs:     stats.CPUStats.OnlineCPUs,
-			SystemCPUUsage: stats.CPUStats.SystemCPUUsage,
-		},
-		NumProcs: stats.NumProcs,
-		Cache:    stats.MemoryStats.Stats.Cache,
-		MaxUsage: stats.MemoryStats.MaxUsage,
-		Limit:    stats.MemoryStats.Limit,
-		Usage:    stats.MemoryStats.Usage,
-	}
 	fmt.Println(stats.CPUStats.CPUUsage.PercpuUsage)
-	return resp
+	return d.toStats(stats)
 }
 
 // Name returns name of container type
@@ -173,6 +161,17 @@ func (d *Docker) fromInspectContainer(c *docker.Container) *structs.Container {
 	}
 }
 
-func (d *Docker) toStats(s *docker.Stats) *structs.ContainerStat {
-	return &structs.ContainerStat{}
+func (d *Docker) toStats(stats *docker.Stats) *structs.ContainerStat {
+	return &structs.ContainerStat{
+		CPU: structs.CPUStat{
+			TotalUsage:     stats.CPUStats.CPUUsage.TotalUsage,
+			OnlineCPUs:     stats.CPUStats.OnlineCPUs,
+			SystemCPUUsage: stats.CPUStats.SystemCPUUsage,
+		},
+		NumProcs: stats.NumProcs,
+		Cache:    stats.MemoryStats.Stats.Cache,
+		MaxUsage: stats.MemoryStats.MaxUsage,
+		Limit:    stats.MemoryStats.Limit,
+		Usage:    stats.MemoryStats.Usage,
+	}
 }
