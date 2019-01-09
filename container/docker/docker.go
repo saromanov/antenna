@@ -86,12 +86,12 @@ func (d *Docker) GetStats(id string) *structs.ContainerStat {
 			TotalUsage:     stats.CPUStats.CPUUsage.TotalUsage,
 			OnlineCPUs:     stats.CPUStats.OnlineCPUs,
 			SystemCPUUsage: stats.CPUStats.SystemCPUUsage,
-			NumProcs:       stats.NumProcs,
-			Cache:          stats.MemoryStats.Stats.Cache,
-			MaxUsage:       stats.MemoryStats.MaxUsage,
-			Limit:          stats.MemoryStats.Limit,
-			Usage:          stats.MemoryStats.Usage,
 		},
+		NumProcs: stats.NumProcs,
+		Cache:    stats.MemoryStats.Stats.Cache,
+		MaxUsage: stats.MemoryStats.MaxUsage,
+		Limit:    stats.MemoryStats.Limit,
+		Usage:    stats.MemoryStats.Usage,
 	}
 	fmt.Println(stats.CPUStats.CPUUsage.PercpuUsage)
 	return resp

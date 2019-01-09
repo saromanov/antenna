@@ -61,7 +61,7 @@ type ContainerStat struct {
 	Timestamp time.Time `json:"timestamp"`
 	CPU       CPUStat   `json:"cpu_stat"`
 	HasCPU    bool      `json:"has_cpu"`
-	NumProcs  uint64    `json:"num_procs"`
+	NumProcs  uint32    `json:"num_procs"`
 	Cache     uint64    `json:"cache"`
 	Limit     uint64    `json:"limit"`
 	Usage     uint64    `json:"usage"`
