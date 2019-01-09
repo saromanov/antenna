@@ -75,32 +75,13 @@ func (d *Docker) List(opt *structs.ListContainersOptions) ([]*structs.Container,
 // GetStats returns stat for container
 func (d *Docker) GetStats(id string) *structs.ContainerStat {
 	statsC := make(chan *docker.Stats)
-	/*d.client.Stats(docker.StatsOptions{
-		ID:     id,
-		Stream: false,
-		Stats:  statsC,
-	})*/
-	fmt.Println("GEtStats: ", id)
 	go func() {
 		if err := d.client.Stats(docker.StatsOptions{ID: id, Stats: statsC, Stream: false}); err != nil {
 			fmt.Println("unable to get stats: ", err)
 		}
 	}()
-	fmt.Println("NEXT")
-	/*var resultStats []*docker.Stats
-	for {
-		stats, ok := <-statsC
-		if !ok {
-			break
-		}
-		fmt.Println(stats)
-		resultStats = append(resultStats, stats)
-	}
-
-	fmt.Println(resultStats)*/
-	//stats, _ := <-statsC
 	stats := <-statsC
-	fmt.Println(stats)
+	fmt.Println(stats.MemoryStats.Stats)
 	return nil
 }
 
