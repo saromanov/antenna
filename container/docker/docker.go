@@ -81,8 +81,15 @@ func (d *Docker) GetStats(id string) *structs.ContainerStat {
 		}
 	}()
 	stats := <-statsC
-	fmt.Println(stats.MemoryStats.Stats)
-	return nil
+	resp := &structs.ContainerStat{
+		CPU: structs.CPUStat{
+			TotalUsage:     stats.CPUStats.CPUUsage.TotalUsage,
+			OnlineCPUs:     stats.CPUStats.OnlineCPUs,
+			SystemCPUUsage: stats.CPUStats.SystemCPUUsage,
+		},
+	}
+	fmt.Println(stats.CPUStats.CPUUsage.PercpuUsage)
+	return resp
 }
 
 // Name returns name of container type
