@@ -58,7 +58,9 @@ type Container struct {
 // ContainerStat provides definition for statistics
 // on container
 type ContainerStat struct {
-	Stat []*Stat
+	Timestamp time.Time `json:"timestamp"`
+	CPU       CPUStat   `json:"cpu_stat"`
+	HasCPU    bool      `json:"has_cpu"`
 }
 
 // ContainerStat returns statistics for container
@@ -70,4 +72,7 @@ type Stat struct {
 
 // CPUStat defines statistics for cpu usage
 type CPUStat struct {
+	TotalUsage     uint64 `json:"total_usage"`
+	SystemCPUUsage uint64 `json:"system_cpu_usage"`
+	OnlineCPUs     uint64 `json:"online_cpus"`
 }
