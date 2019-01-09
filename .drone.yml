@@ -9,5 +9,6 @@ steps:
     image: golang:1.11
     pull: true
     commands:
+      - go get ./...
       - go test -v .
       - go vet

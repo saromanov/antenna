@@ -94,6 +94,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	old := a.containers
 	for _, c := range containers {
 		container, _ := a.dockerClient.Get(c.ID)
+		go a.dockerClient.GetStats(container.ID)
 		fmt.Println(container.Name, container.Running)
 		a.containers[c.Name] = c
 	}

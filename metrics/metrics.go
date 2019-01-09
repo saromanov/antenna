@@ -22,7 +22,7 @@ type PrometheusCollector struct {
 	containerMetrics []containerMetric
 }
 
-func NewPrometheusCollector(i infoProvider, f ContainerLabelsFunc, includedMetrics container.MetricSet) *PrometheusCollector {
+func NewPrometheusCollector(f ContainerLabelsFunc, includedMetrics container.MetricSet) *PrometheusCollector {
 	if f == nil {
 		f = DefaultContainerLabels
 	}
@@ -51,8 +51,8 @@ func NewPrometheusCollector(i infoProvider, f ContainerLabelsFunc, includedMetri
 				name:      "container_cpu_user_seconds_total",
 				help:      "Cumulative user cpu time consumed in seconds.",
 				valueType: prometheus.CounterValue,
-			}
-		}
+			},
+		})
 }
 			
 
