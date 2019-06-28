@@ -81,3 +81,10 @@ type CPUStat struct {
 	SystemCPUUsage uint64 `json:"system_cpu_usage"`
 	OnlineCPUs     uint64 `json:"online_cpus"`
 }
+
+// ContainerStatSearch provides searching 
+// of stat on the storage
+type ContainerStatSearch struct {
+	FromTimestamp time.Time `json:"timestamp"`
+	ToTimestamp time.Time `json:"timestamp"`
+}
