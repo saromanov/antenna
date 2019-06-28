@@ -1,6 +1,7 @@
 package antenna
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"sync"
@@ -121,6 +122,14 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 			event: ContainerAdd,
 		}
 	}*/
+}
+
+// insertStat provides inserting of the container stat to the storage
+func (a *Application) insertStats(stat *structs.ContainerStat) error {
+	if a.Store == nil {
+		return errors.New("storage is not defined")
+	}
+	return a.Store.Add(stat)
 }
 
 func (a *Application) startEventWatcher() {

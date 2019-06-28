@@ -9,7 +9,7 @@ import (
 )
 
 // containerWatcher creates object for watch running containers
-// and gettign info from this
+// and getting info from this
 type containerWatcher struct {
 	dockerClient *docker.Docker
 	events       chan *ContainerEvent
