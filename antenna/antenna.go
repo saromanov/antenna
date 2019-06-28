@@ -95,7 +95,10 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	old := a.containers
 	for _, c := range containers {
 		container, _ := a.dockerClient.Get(c.ID)
-		go a.dockerClient.GetStats(container.ID)
+		stats := a.dockerClient.GetStats(container.ID)
+		if err := a.insertStats(stats); err != nil {
+			fmt.Println("unable to insert stats: ", err)
+		}
 		fmt.Println(container.Name, container.Running)
 		a.containers[c.Name] = c
 	}
