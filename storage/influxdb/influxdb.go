@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/influxdata/influxdb/client/v2"
+	"github.com/pkg/errors"
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
 )
@@ -32,6 +33,7 @@ func new(conf *storage.Config) (storage.Storage, error) {
 	}
 	return &influxDB{
 		client: cli,
+		database: conf.Database,
 	}, nil
 }
 
@@ -44,13 +46,13 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 		Precision: "s",
 	})
 	if err != nil {
-		return err
+		return errors.Wrap(err, "unable to create new batch point")
 	}
 	if err := i.client.Write(bp); err != nil {
-		return err
+		return errors.Wrap(err, "unable to write data")
 	}
 	if err := i.client.Close(); err != nil {
-		return err
+		return errors.Wrap(err, "unable to close connection")
 	}
 	return nil
 }

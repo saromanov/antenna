@@ -22,7 +22,8 @@ var (
 func main() {
 	log.SetFormatter(&log.JSONFormatter{})
 	st, err := influxdb.New(&storage.Config{
-		URL: "http://localhost:8086",
+		URL:      "http://localhost:8086",
+		Database: "antenna_container_metrics",
 	})
 	if err != nil {
 		log.WithFields(log.Fields{
