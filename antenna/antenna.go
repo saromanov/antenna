@@ -10,6 +10,7 @@ import (
 	"github.com/saromanov/antenna/container/docker"
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
+	log "github.com/sirupsen/logrus"
 )
 
 // Application provides definition of the main
@@ -97,9 +98,8 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		container, _ := a.dockerClient.Get(c.ID)
 		stats := a.dockerClient.GetStats(container.ID)
 		if err := a.insertStats(stats); err != nil {
-			fmt.Println("unable to insert stats: ", err)
+			log.WithFields(log.Fields{}).Infof("unable to insert stat to the storage: %v", err)
 		}
-		fmt.Println(container.Name, container.Running)
 		a.containers[c.Name] = c
 	}
 
