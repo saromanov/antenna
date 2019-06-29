@@ -1,6 +1,8 @@
 package influxdb
 
 import (
+	"encoding/json"
+	"strconv"
 	"sync"
 
 	"github.com/influxdata/influxdb/client/v2"
@@ -32,7 +34,7 @@ func new(conf *storage.Config) (storage.Storage, error) {
 		return nil, err
 	}
 	return &influxDB{
-		client: cli,
+		client:   cli,
 		database: conf.Database,
 	}, nil
 }
@@ -63,20 +65,32 @@ func (i *influxDB) Search(req *structs.ContainerStatSearch) ([]*structs.Containe
 }
 
 // Search provides searching of the stats by the query
-func (i *influxDB) Aggregate(*structs.AggregateSearchRequest)(*structs.AggregateSearchResponse, error) {
+func (i *influxDB) Aggregate(req *structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error) {
 	q := client.Query{
-		Command:  cmd,
-		Database: MyDB,
+		Command:  req.Request,
+		Database: i.database,
 	}
-	if response, err := c.Query(q); err == nil {
-		if response.Error() != nil {
-			return res, response.Error()
+	response, err := i.client.Query(q)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to query data")
+	}
+	if response.Error() != nil {
+		return nil, response.Error()
+	}
+	res := response.Results
+	if len(res) == 0 {
+		return nil, errors.New("unable to aggregate results")
+	}
+	aggr := &structs.AggregateSearchResponse{}
+	if len(res[0].Series) > 0 {
+		numStr := res[0].Series[0].Values[0][1].(json.Number)
+		num, err := strconv.ParseInt(string(numStr), 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to parse result")
 		}
-		res = response.Results
-	} else {
-		return res, err
+		aggr.Count = uint64(num)
 	}
-	return nil, nil
+	return aggr, nil
 }
 
 // Close provides closing of db instance
