@@ -62,6 +62,23 @@ func (i *influxDB) Search(req *structs.ContainerStatSearch) ([]*structs.Containe
 	return nil, nil
 }
 
+// Search provides searching of the stats by the query
+func (i *influxDB) Aggregate(*structs.AggregateSearchRequest)(*structs.AggregateSearchResponse, error) {
+	q := client.Query{
+		Command:  cmd,
+		Database: MyDB,
+	}
+	if response, err := c.Query(q); err == nil {
+		if response.Error() != nil {
+			return res, response.Error()
+		}
+		res = response.Results
+	} else {
+		return res, err
+	}
+	return nil, nil
+}
+
 // Close provides closing of db instance
 func (i *influxDB) Close() error {
 	return i.client.Close()

@@ -82,9 +82,21 @@ type CPUStat struct {
 	OnlineCPUs     uint64 `json:"online_cpus"`
 }
 
-// ContainerStatSearch provides searching 
+// ContainerStatSearch provides searching
 // of stat on the storage
 type ContainerStatSearch struct {
 	FromTimestamp time.Time `json:"timestamp"`
-	ToTimestamp time.Time `json:"timestamp"`
+	ToTimestamp   time.Time `json:"timestamp"`
+}
+
+// AggregateSearchRequest provides request
+// for aggregation for storage
+type AggregateSearchRequest struct {
+	Request string `json:"attribute"`
+}
+
+// AggregateSearchResponse provides response for
+// aggregation for storage
+type AggregateSearchResponse struct {
+	Count uint64 `json:"count"`
 }
