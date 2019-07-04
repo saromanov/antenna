@@ -17,7 +17,10 @@ type server struct {
 // AggregateMetrics defines api endpoint for getting aggregated
 // metrics from container
 func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
-	response, err := s.st.Aggregate(&structs.AggregateSearchRequest{})
+	query := r.FormValue("query")
+	response, err := s.st.Aggregate(&structs.AggregateSearchRequest{
+		Request: query,
+	})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

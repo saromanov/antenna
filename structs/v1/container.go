@@ -92,7 +92,7 @@ type ContainerStatSearch struct {
 // AggregateSearchRequest provides request
 // for aggregation for storage
 type AggregateSearchRequest struct {
-	Request string `json:"attribute"`
+	Request string `json:"request"`
 }
 
 // AggregateSearchResponse provides response for
