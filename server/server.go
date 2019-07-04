@@ -1,7 +1,7 @@
 package server
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -22,13 +22,19 @@ func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(response)
+	result, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(result)
 }
 
 func Start(st storage.Storage, address string) {
 
 	s := &server{st: st}
-	http.HandleFunc("/aggregate", s.AggregateMetrics)
+	http.HandleFunc("/v1/aggregate", s.AggregateMetrics)
 	err := http.ListenAndServe(address, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
