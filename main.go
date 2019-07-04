@@ -8,6 +8,7 @@ import (
 
 	"github.com/saromanov/antenna/antenna"
 	"github.com/saromanov/antenna/storage"
+	"github.com/saromanov/antenna/server"
 	"github.com/saromanov/antenna/storage/influxdb"
 	log "github.com/sirupsen/logrus"
 )
@@ -30,6 +31,12 @@ func main() {
 			"stage": logStage,
 		}).Fatalf("unable to init InfluxDB: %v", err)
 	}
+
+	log.WithFields(log.Fields{
+		"stage": logStage,
+	}).Info("init of the server")
+
+	go server.Start(st, "localhost:1255")
 
 	log.WithFields(log.Fields{
 		"stage": logStage,
