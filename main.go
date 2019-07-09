@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/saromanov/antenna/antenna"
-	"github.com/saromanov/antenna/storage"
 	"github.com/saromanov/antenna/server"
+	"github.com/saromanov/antenna/storage"
 	"github.com/saromanov/antenna/storage/influxdb"
 	log "github.com/sirupsen/logrus"
 )
@@ -34,7 +34,7 @@ func main() {
 
 	log.WithFields(log.Fields{
 		"stage": logStage,
-	}).Info("init of the server")
+	}).Info("init of the server at the address localhost:1255")
 
 	go server.Start(st, "localhost:1255")
 
