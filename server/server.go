@@ -18,6 +18,10 @@ type server struct {
 // metrics from container
 func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 	query := r.FormValue("query")
+	if query == "" {
+		http.Error(w, "query is not defined", http.StatusInternalServerError)
+		return
+	}
 	response, err := s.st.Aggregate(&structs.AggregateSearchRequest{
 		Request: query,
 	})
