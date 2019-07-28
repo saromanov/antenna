@@ -24,6 +24,7 @@ type Application struct {
 	containers     map[string]*structs.Container
 	containersLock *sync.RWMutex
 	startTime      time.Time
+	staticHostInfo *HostInfo
 }
 
 type containerInfo struct {
@@ -52,6 +53,7 @@ type ContainerEvent struct {
 
 // Start provides starting of the app
 func (a *Application) Start() error {
+	var err error
 	a.startTime = time.Now().UTC()
 	a.events = make(chan *ContainerEvent)
 	a.containersLock = &sync.RWMutex{}
@@ -60,6 +62,11 @@ func (a *Application) Start() error {
 	a.watcher = &containerWatcher{
 		dockerClient: a.dockerClient,
 		events:       a.events,
+	}
+
+	a.staticHostInfo, err = getStaticHostInfo()
+	if err != nil {
+		return err
 	}
 	go a.watcher.Watch()
 	a.startEventWatcher()
