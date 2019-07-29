@@ -66,7 +66,7 @@ func (a *Application) Start() error {
 
 	a.staticHostInfo, err = getStaticHostInfo()
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to get host info: %v", err)
 	}
 	go a.watcher.Watch()
 	a.startEventWatcher()
