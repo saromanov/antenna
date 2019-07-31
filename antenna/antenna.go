@@ -58,7 +58,8 @@ func (a *Application) Start() error {
 	a.events = make(chan *ContainerEvent)
 	a.containersLock = &sync.RWMutex{}
 	a.containers = make(map[string]*structs.Container)
-	a.connectToDocker()
+	client := docker.Init(&structs.ClientContainerConfig{})
+	a.dockerClient = client
 	a.watcher = &containerWatcher{
 		dockerClient: a.dockerClient,
 		events:       a.events,
@@ -71,12 +72,6 @@ func (a *Application) Start() error {
 	go a.watcher.Watch()
 	a.startEventWatcher()
 	return nil
-}
-
-// connectToDocker creates connection to docker via client
-func (a *Application) connectToDocker() {
-	client := docker.Init(&structs.ClientContainerConfig{})
-	a.dockerClient = client
 }
 
 // getContainers returns map of containers
