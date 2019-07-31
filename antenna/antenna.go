@@ -100,7 +100,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		container, _ := a.dockerClient.Get(c.ID)
 		stats := a.dockerClient.GetStats(container.ID)
 		if err := a.insertStats(stats); err != nil {
-			log.WithFields(log.Fields{}).Infof("unable to insert stat to the storage: %v", err)
+			log.WithFields(log.Fields{"method": "processListContainers"}).Infof("unable to insert stat to the storage: %v", err)
 		}
 		a.containers[c.Name] = c
 	}

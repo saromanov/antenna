@@ -167,6 +167,7 @@ func (d *Docker) toStats(stats *docker.Stats) *structs.ContainerStat {
 			TotalUsage:     stats.CPUStats.CPUUsage.TotalUsage,
 			OnlineCPUs:     stats.CPUStats.OnlineCPUs,
 			SystemCPUUsage: stats.CPUStats.SystemCPUUsage,
+			UsageInUsermode: stats.CPUStats.CPUUsage.UsageInUsermode,
 		},
 		NumProcs: stats.NumProcs,
 		Cache:    stats.MemoryStats.Stats.Cache,

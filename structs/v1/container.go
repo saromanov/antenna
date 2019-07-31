@@ -77,9 +77,10 @@ type Stat struct {
 
 // CPUStat defines statistics for cpu usage
 type CPUStat struct {
-	TotalUsage     uint64 `json:"total_usage"`
-	SystemCPUUsage uint64 `json:"system_cpu_usage"`
-	OnlineCPUs     uint64 `json:"online_cpus"`
+	TotalUsage      uint64 `json:"total_usage"`
+	SystemCPUUsage  uint64 `json:"system_cpu_usage"`
+	OnlineCPUs      uint64 `json:"online_cpus"`
+	UsageInUsermode uint64 `json:"usage_in_usermode"`
 }
 
 // ContainerStatSearch provides searching
