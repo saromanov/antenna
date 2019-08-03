@@ -164,9 +164,9 @@ func (d *Docker) fromInspectContainer(c *docker.Container) *structs.Container {
 func (d *Docker) toStats(stats *docker.Stats) *structs.ContainerStat {
 	return &structs.ContainerStat{
 		CPU: structs.CPUStat{
-			TotalUsage:     stats.CPUStats.CPUUsage.TotalUsage,
-			OnlineCPUs:     stats.CPUStats.OnlineCPUs,
-			SystemCPUUsage: stats.CPUStats.SystemCPUUsage,
+			TotalUsage:      stats.CPUStats.CPUUsage.TotalUsage,
+			OnlineCPUs:      stats.CPUStats.OnlineCPUs,
+			SystemCPUUsage:  stats.CPUStats.SystemCPUUsage,
 			UsageInUsermode: stats.CPUStats.CPUUsage.UsageInUsermode,
 		},
 		NumProcs: stats.NumProcs,

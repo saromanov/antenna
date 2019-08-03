@@ -102,7 +102,11 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		if err := a.insertStats(stats); err != nil {
 			log.WithFields(log.Fields{"method": "processListContainers"}).Infof("unable to insert stat to the storage: %v", err)
 		}
-		a.containers[c.Name] = c
+		var name string
+		if len(c.Names) > 0 {
+			name = c.Names[0]
+		}
+		a.containers[name] = c
 	}
 
 	go func(p, n map[string]*structs.Container) {
