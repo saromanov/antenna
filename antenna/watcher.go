@@ -23,6 +23,7 @@ func (w *containerWatcher) Watch() {
 			containers: w.getContainers(),
 		}
 	})
+	fmt.Printf("starting of the watcher")
 	c.Start()
 }
 

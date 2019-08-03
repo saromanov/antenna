@@ -116,17 +116,18 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 					}
 				}
 				if !found {
-					fmt.Println("Container was removed: ", c.ID)
+					log.WithFields(log.Fields{"method": "processListContainers"}).Infof("container was removed: %v", c.ID)
 				}
 			}
 		}
 		return
 	}(old, a.containers)
-	/*if oldSize < len(a.containers) {
+
+	if len(old) < len(a.containers) {
 		a.events <- &ContainerEvent{
 			event: ContainerAdd,
 		}
-	}*/
+	}
 }
 
 // insertStat provides inserting of the container stat to the storage
