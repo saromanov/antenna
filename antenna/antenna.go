@@ -96,6 +96,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	a.containersLock.RLock()
 	defer a.containersLock.RUnlock()
 	numOld := len(a.containers)
+	old := copyMap(a.containers)
 	for _, c := range containers {
 		container, _ := a.dockerClient.Get(c.ID)
 		stats := a.dockerClient.GetStats(container.ID)
@@ -127,9 +128,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		return
 	}(old, a.containers)
 	if numOld < len(containers) {
-		a.events <- &ContainerEvent{
-			event: ContainerAdd,
-		}
+		a.addContainer()
 	}
 }
 
