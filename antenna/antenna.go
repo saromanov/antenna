@@ -22,6 +22,7 @@ type Application struct {
 	dockerClient   *docker.Docker
 	watcher        *containerWatcher
 	containers     map[string]*structs.Container
+	allContainers  map[string]*structs.Container
 	containersLock *sync.RWMutex
 	startTime      time.Time
 	staticHostInfo *HostInfo
@@ -108,6 +109,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 			name = c.Names[0]
 		}
 		a.containers[name] = c
+		a.allContainers[name] = c
 	}
 
 	go func(p map[string]*structs.Container, cont []*structs.Container, numOldContainers int) {
