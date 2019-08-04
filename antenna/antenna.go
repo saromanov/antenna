@@ -87,7 +87,6 @@ func (a *Application) addContainer() {
 }
 
 func (a *Application) removeContainer(name string) {
-	fmt.Println("REMOVE")
 	func() {
 		a.containersLock.RLock()
 		defer a.containersLock.RUnlock()
@@ -127,7 +126,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 				if !found {
 					a.events <- &ContainerEvent{
 						event: ContainerRemove,
-						name:  c.Name,
+						name:  c.Names[0],
 					}
 					log.WithFields(log.Fields{"method": "processListContainers"}).Infof("container was removed: %v", c.ID)
 				}
