@@ -110,11 +110,12 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		a.containers[name] = c
 	}
 
-	go func(p, n map[string]*structs.Container) {
-		if numOld > len(a.containers) {
+	go func(p map[string]*structs.Container, cont []*structs.Container, numOldContainers int) {
+		fmt.Println("OLDDD: ", numOldContainers, len(a.containers))
+		if numOldContainers > len(cont) {
 			for _, c := range old {
 				found := false
-				for _, c2 := range a.containers {
+				for _, c2 := range cont {
 					if c.ID == c2.ID {
 						found = true
 						break
@@ -126,7 +127,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 			}
 		}
 		return
-	}(old, a.containers)
+	}(old, containers, numOld)
 	if numOld < len(containers) {
 		a.addContainer()
 	}
