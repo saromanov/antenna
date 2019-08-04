@@ -59,6 +59,7 @@ func (a *Application) Start() error {
 	a.events = make(chan *ContainerEvent)
 	a.containersLock = &sync.RWMutex{}
 	a.containers = make(map[string]*structs.Container)
+	a.allContainers = make(map[string]*structs.Container)
 	client := docker.Init(&structs.ClientContainerConfig{})
 	a.dockerClient = client
 	a.watcher = &containerWatcher{
@@ -86,6 +87,7 @@ func (a *Application) addContainer() {
 }
 
 func (a *Application) removeContainer(name string) {
+	fmt.Println("REMOVE")
 	func() {
 		a.containersLock.RLock()
 		defer a.containersLock.RUnlock()
@@ -113,7 +115,6 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	}
 
 	go func(p map[string]*structs.Container, cont []*structs.Container, numOldContainers int) {
-		fmt.Println("OLDDD: ", numOldContainers, len(a.containers))
 		if numOldContainers > len(cont) {
 			for _, c := range old {
 				found := false
@@ -124,6 +125,10 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 					}
 				}
 				if !found {
+					a.events <- &ContainerEvent{
+						event: ContainerRemove,
+						name:  c.Name,
+					}
 					log.WithFields(log.Fields{"method": "processListContainers"}).Infof("container was removed: %v", c.ID)
 				}
 			}
