@@ -95,7 +95,7 @@ func (a *Application) removeContainer(name string) {
 func (a *Application) processListContainers(containers []*structs.Container) {
 	a.containersLock.RLock()
 	defer a.containersLock.RUnlock()
-	old := a.containers
+	numOld := len(a.containers)
 	for _, c := range containers {
 		container, _ := a.dockerClient.Get(c.ID)
 		stats := a.dockerClient.GetStats(container.ID)
@@ -110,7 +110,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	}
 
 	go func(p, n map[string]*structs.Container) {
-		if len(old) > len(a.containers) {
+		if numOld > len(a.containers) {
 			for _, c := range old {
 				found := false
 				for _, c2 := range a.containers {
@@ -126,8 +126,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		}
 		return
 	}(old, a.containers)
-
-	if len(old) < len(a.containers) {
+	if numOld < len(containers) {
 		a.events <- &ContainerEvent{
 			event: ContainerAdd,
 		}
@@ -186,4 +185,13 @@ func (a *Application) GetContainerInfo(name string) (*structs.Container, error) 
 		return nil, fmt.Errorf("unknown container %q", name)
 	}
 	return cont, nil
+}
+
+// copyMap provides copy of the containers map into the new one
+func copyMap(s map[string]*structs.Container) map[string]*structs.Container {
+	response := make(map[string]*structs.Container)
+	for k, v := range s {
+		response[k] = v
+	}
+	return response
 }
