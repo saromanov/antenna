@@ -100,7 +100,8 @@ func (i *influxDB) Close() error {
 
 func (i *influxDB) toPoints(metrics *structs.ContainerStat) []*client.Point {
 	points := []*client.Point{}
-	points = append(points, makePoint("cpu", "1"))
+	points = append(points, makePoint("cache", metrics.Cache))
+	points = append(points, makePoint("usage", metrics.Usage))
 	return nil
 }
 
