@@ -134,9 +134,6 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 		}
 		return
 	}(old, containers, numOld)
-	if numOld < len(containers) {
-		a.addContainer()
-	}
 }
 
 // insertStat provides inserting of the container stat to the storage
