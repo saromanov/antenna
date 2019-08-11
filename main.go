@@ -9,8 +9,8 @@ import (
 	"github.com/saromanov/antenna/antenna"
 	"github.com/saromanov/antenna/server"
 	"github.com/saromanov/antenna/storage"
-	"github.com/saromanov/antenna/storage/influxdb"
 	"github.com/saromanov/antenna/storage/hashmap"
+	"github.com/saromanov/antenna/storage/influxdb"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -48,8 +48,8 @@ func main() {
 	log.WithFields(log.Fields{
 		"stage": logStage,
 	}).Info("init of Antenna app")
-	
-	hash, err := hashmap.New(conf)
+
+	hash, err := hashmap.New(&storage.Config{})
 	if err != nil {
 		log.WithFields(log.Fields{
 			"stage": logStage,
@@ -58,7 +58,7 @@ func main() {
 	ant := antenna.Application{
 		HTTPClient: client,
 		Store:      st,
-		MapStore: hash,
+		MapStore:   hash,
 	}
 	ant.Start()
 }
