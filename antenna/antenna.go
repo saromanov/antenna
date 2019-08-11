@@ -142,7 +142,27 @@ func (a *Application) insertStats(stat *structs.ContainerStat) error {
 	if a.Store == nil {
 		return errors.New("storage is not defined")
 	}
-	return a.Store.Add(stat)
+	err := a.Store.Add(stat)
+	if err != nil {
+		log.WithFields(log.Fields{"method": "processListContainers"}).Infof("unable to insert stat to the storage: %v", err)
+		err = a.insertStatsToMap(stat)
+		if err != nil {
+			return fmt.Errorf("unable to insert stats to the temp storage: %v", err)
+		}
+		log.WithFields(log.Fields{"method": "processListContainers"}).Infof("stats was inserted to the temp storage")
+	}
+
+	return nil
+}
+
+// insertStatsToMap probvides inserting to the temp map
+// until main storage will be available
+func (a *Application) insertStatsToMap(stat *structs.ContainerStat) error {
+	if a.MapStore == nil {
+		return errors.New("map storage is empty")
+	}
+
+	return a.MapStore.Add(stat)
 }
 
 func (a *Application) startEventWatcher() {
