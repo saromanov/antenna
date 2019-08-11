@@ -47,5 +47,6 @@ func (h *hashmap) Aggregate(req *structs.AggregateSearchRequest) (*structs.Aggre
 	return nil, nil
 }
 func (h *hashmap) Close() error {
+	h.data = map[string]*structs.ContainerStat{}
 	return nil
 }
