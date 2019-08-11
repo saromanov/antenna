@@ -3,6 +3,7 @@ package hashmap
 import (
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
+	"github.com/satori/go.uuid"
 )
 
 // hashmap represents local storage
@@ -26,16 +27,25 @@ func new(conf *storage.Config) (storage.Storage, error) {
 
 // Add provides adding of stat
 func (h *hashmap) Add(metrics *structs.ContainerStat) error {
+	u, err := uuid.NewV4()
+	if err != nil {
+		return err
+	}
+	h.data[u.String()] = metrics
 	return nil
 }
 
-func (i *hashmap) Search(req *structs.ContainerStatSearch) ([]*structs.ContainerStat, error) {
-	return nil, nil
+func (h *hashmap) Search(req *structs.ContainerStatSearch) ([]*structs.ContainerStat, error) {
+	response := []*structs.ContainerStat{}
+	for _, value := range h.data {
+		response = append(response, value)
+	}
+	return response, nil
 }
 
-func (i *hashmap) Aggregate(req *structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error) {
+func (h *hashmap) Aggregate(req *structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error) {
 	return nil, nil
 }
-func (i *hashmap) Close() error {
+func (h *hashmap) Close() error {
 	return nil
 }
