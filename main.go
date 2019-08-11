@@ -10,6 +10,7 @@ import (
 	"github.com/saromanov/antenna/server"
 	"github.com/saromanov/antenna/storage"
 	"github.com/saromanov/antenna/storage/influxdb"
+	"github.com/saromanov/antenna/storage/hashmap"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -47,10 +48,17 @@ func main() {
 	log.WithFields(log.Fields{
 		"stage": logStage,
 	}).Info("init of Antenna app")
-
+	
+	hash, err := hashmap.New(conf)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"stage": logStage,
+		}).Fatalf("unable to init hashmap storage: %v", err)
+	}
 	ant := antenna.Application{
 		HTTPClient: client,
 		Store:      st,
+		MapStore: hash,
 	}
 	ant.Start()
 }

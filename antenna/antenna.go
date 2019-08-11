@@ -18,6 +18,7 @@ import (
 type Application struct {
 	HTTPClient     http.Client
 	Store          storage.Storage
+	MapStore       storage.Storage
 	events         chan *ContainerEvent
 	dockerClient   *docker.Docker
 	watcher        *containerWatcher
