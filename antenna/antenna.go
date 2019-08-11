@@ -138,6 +138,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 }
 
 // insertStat provides inserting of the container stat to the storage
+// if storage is not available
 func (a *Application) insertStats(stat *structs.ContainerStat) error {
 	if a.Store == nil {
 		return errors.New("storage is not defined")
@@ -152,6 +153,19 @@ func (a *Application) insertStats(stat *structs.ContainerStat) error {
 		log.WithFields(log.Fields{"method": "processListContainers"}).Infof("stats was inserted to the temp storage")
 	}
 
+	oldData, err := a.getStatsFromMap()
+	if err != nil {
+		return err
+	}
+
+	for _, d := range oldData {
+		if err := a.Store.Add(d); err != nil {
+			return err
+		}
+		log.WithFields(log.Fields{"method": "processListContainers"}).Infof("new event was inserted")
+	}
+
+	a.MapStore.Close()
 	return nil
 }
 
@@ -161,8 +175,16 @@ func (a *Application) insertStatsToMap(stat *structs.ContainerStat) error {
 	if a.MapStore == nil {
 		return errors.New("map storage is empty")
 	}
-
 	return a.MapStore.Add(stat)
+}
+
+// getStatsFromMap returns data from temp hashmap
+func (a *Application) getStatsFromMap() ([]*structs.ContainerStat, error) {
+	if a.MapStore == nil {
+		return nil, errors.New("map storage is empty")
+	}
+
+	return a.MapStore.Search(&structs.ContainerStatSearch{})
 }
 
 func (a *Application) startEventWatcher() {
