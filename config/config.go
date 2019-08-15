@@ -19,11 +19,11 @@ type Config struct {
 // Load provides loading of the config
 func Load(path string) (*Config, error) {
 	c := &Config{}
-	yamlFile, err := ioutil.ReadFile(filename)
+	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
-	err := yaml.Unmarshal([]byte(yamlFile), &c)
+	err = yaml.Unmarshal([]byte(yamlFile), &c)
 	if err != nil {
 		return nil, fmt.Errorf("unable to ")
 	}
