@@ -29,3 +29,9 @@ func Load(path string) (*Config, error) {
 	}
 	return c, nil
 }
+
+func LoadDefault() *Config {
+	return &Config{
+		InfluxAddress: "http://localhost:8086",
+	}
+}

@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/saromanov/antenna/antenna"
+	"github.com/saromanov/antenna/config"
 	"github.com/saromanov/antenna/server"
 	"github.com/saromanov/antenna/storage"
-	"github.com/saromanov/antenna/config"
 	"github.com/saromanov/antenna/storage/hashmap"
 	"github.com/saromanov/antenna/storage/influxdb"
 	log "github.com/sirupsen/logrus"
@@ -29,10 +29,11 @@ func main() {
 		log.WithFields(log.Fields{
 			"stage": logStage,
 		}).Fatalf("unable to load config: %v", err)
+		conf = config.LoadDefault()
 	}
 	st, err := influxdb.New(&storage.Config{
 		URL:      "http://localhost:8086",
-		Database: "antenna_container_metrics",
+		Database: conf.InfluxDatabase,
 	})
 	if err != nil {
 		log.WithFields(log.Fields{
