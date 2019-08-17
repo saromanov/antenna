@@ -32,7 +32,7 @@ func main() {
 		conf = config.LoadDefault()
 	}
 	st, err := influxdb.New(&storage.Config{
-		URL:      "http://localhost:8086",
+		URL:      conf.InfluxAddress,
 		Database: conf.InfluxDatabase,
 	})
 	if err != nil {
