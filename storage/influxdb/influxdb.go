@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/influxdata/influxdb/client/v2"
+	"github.com/influxdata/influxdb1-client/v2"
 	"github.com/pkg/errors"
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
