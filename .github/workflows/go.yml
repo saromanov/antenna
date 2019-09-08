@@ -1,9 +1,10 @@
 name: Go
 on: [push]
 jobs:
-  services:
-    influx:
-      image: influxdb
+  container-job:
+    services:
+      influx:
+        image: influxdb
       
   
   build:
