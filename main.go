@@ -31,10 +31,7 @@ func main() {
 		}).Warnf("unable to load config: %v", err)
 		conf = config.LoadDefault()
 	}
-	st, err := influxdb.New(&storage.Config{
-		URL:      conf.InfluxAddress,
-		Database: conf.InfluxDatabase,
-	})
+	st, err := influxdb.New(conf.Storage)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"stage": logStage,

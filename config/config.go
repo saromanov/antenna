@@ -5,15 +5,17 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/saromanov/antenna/storage"
 	"gopkg.in/yaml.v2"
 )
 
 // Config defines configuration for the antenna
 type Config struct {
-	ServerAddress  string        `yaml:"server_address"`
-	InfluxAddress  string        `yaml:"influx_addrss"`
-	InfluxDatabase string        `yaml:"influx_database"`
-	SyncTime       time.Duration `yaml:"sync_time"`
+	ServerAddress  string          `yaml:"server_address"`
+	InfluxAddress  string          `yaml:"influx_addrss"`
+	InfluxDatabase string          `yaml:"influx_database"`
+	SyncTime       time.Duration   `yaml:"sync_time"`
+	Storage        *storage.Config `yaml:"storage"`
 }
 
 // Load provides loading of the config
