@@ -43,9 +43,9 @@ func main() {
 
 	log.WithFields(log.Fields{
 		"stage": logStage,
-	}).Info("init of the server at the address localhost:1255")
+	}).Infof("init of the server at the address %s", conf.ServerAddress)
 
-	go server.Start(st, "localhost:1255")
+	go server.Start(st, conf.ServerAddress)
 
 	log.WithFields(log.Fields{
 		"stage": logStage,

@@ -10,7 +10,7 @@ import (
 
 // Config defines configuration for the antenna
 type Config struct {
-	HTTPAddress    string        `yaml:"http_address"`
+	ServerAddress  string        `yaml:"server_address"`
 	InfluxAddress  string        `yaml:"influx_addrss"`
 	InfluxDatabase string        `yaml:"influx_database"`
 	SyncTime       time.Duration `yaml:"sync_time"`
@@ -35,6 +35,6 @@ func LoadDefault() *Config {
 		InfluxAddress:  "http://localhost:8086",
 		InfluxDatabase: "antenna_container_metrics",
 		SyncTime:       15 * time.Second,
-		HTTPAddress:    "localhost:8022",
+		ServerAddress:  "localhost:1255",
 	}
 }
