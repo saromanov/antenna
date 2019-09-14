@@ -38,5 +38,8 @@ func LoadDefault() *Config {
 		InfluxDatabase: "antenna_container_metrics",
 		SyncTime:       15 * time.Second,
 		ServerAddress:  "localhost:1255",
+		Storage: &storage.Config{
+			URL: "http://localhost:8086",
+		},
 	}
 }
