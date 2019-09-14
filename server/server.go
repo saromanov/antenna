@@ -29,7 +29,9 @@ func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	result, err := json.Marshal(response)
+
+	responseOutput := mapAggregateResponse(response)
+	result, err := json.Marshal(responseOutput)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

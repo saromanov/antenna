@@ -1,5 +1,6 @@
 package server
 
-// Response provides writing of response
-type Response struct {
+// AggregateResponse provides writing of response for aggregation
+type AggregateResponse struct {
+	Count uint64 `json:"count"`
 }
