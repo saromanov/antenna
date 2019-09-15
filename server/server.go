@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -26,7 +27,7 @@ func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 		Request: query,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("unable to aggregate query: %v", err), http.StatusInternalServerError)
 		return
 	}
 

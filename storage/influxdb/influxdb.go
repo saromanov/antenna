@@ -75,7 +75,7 @@ func (i *influxDB) Aggregate(req *structs.AggregateSearchRequest) (*structs.Aggr
 		return nil, errors.Wrap(err, "unable to query data")
 	}
 	if response.Error() != nil {
-		return nil, response.Error()
+		return nil, errors.Wrap(response.Error(), "query with error")
 	}
 	res := response.Results
 	if len(res) == 0 {

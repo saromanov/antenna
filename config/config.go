@@ -39,7 +39,8 @@ func LoadDefault() *Config {
 		SyncTime:       15 * time.Second,
 		ServerAddress:  "localhost:1255",
 		Storage: &storage.Config{
-			URL: "http://localhost:8086",
+			URL:      "http://localhost:8086",
+			Database: "antenna_container_metrics",
 		},
 	}
 }
