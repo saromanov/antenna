@@ -16,6 +16,8 @@ type Config struct {
 	InfluxDatabase string          `yaml:"influx_database"`
 	SyncTime       time.Duration   `yaml:"sync_time"`
 	Storage        *storage.Config `yaml:"storage"`
+	Cert           string          `yaml:"cert_key"`
+	Key            string          `yaml:"key"`
 }
 
 // Load provides loading of the config
