@@ -50,6 +50,8 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	if err != nil {
 		return errors.Wrap(err, "unable to create new batch point")
 	}
+	bp.AddPoints(i.toPoints(metrics))
+
 	if err := i.client.Write(bp); err != nil {
 		return errors.Wrap(err, "unable to write data")
 	}
