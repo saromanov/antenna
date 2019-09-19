@@ -5,14 +5,14 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/influxdata/influxdb1-client/v2"
+	"github.com/influxdata/influxdb-client-go"
 	"github.com/pkg/errors"
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
 )
 
 type influxDB struct {
-	client   client.Client
+	client   influxDB.Client
 	database string
 	lock     sync.Mutex
 }
@@ -33,8 +33,13 @@ func new(conf *storage.Config) (storage.Storage, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	influx, err := influxdb.New(myHTTPInfluxAddress, myToken, influxdb.WithHTTPClient(myHTTPClient))
+	if err != nil {
+		return nil, err
+	}
 	return &influxDB{
-		client:   cli,
+		client:   influx,
 		database: conf.Database,
 	}, nil
 }
@@ -52,6 +57,7 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	}
 	bp.AddPoints(i.toPoints(metrics))
 
+	i.client.Write()
 	if err := i.client.Write(bp); err != nil {
 		return errors.Wrap(err, "unable to write data")
 	}
