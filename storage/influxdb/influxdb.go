@@ -6,6 +6,7 @@ import (
 	"sync"
 	"context"
 	"net/http"
+	"time"
 	"github.com/influxdata/influxdb-client-go"
 	"github.com/pkg/errors"
 	"github.com/saromanov/antenna/storage"
@@ -87,18 +88,18 @@ func (i *influxDB) Close() error {
 	return i.client.Close()
 }
 
-func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []*client.Point {
-	points := []*client.Metric{}
+func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []*influxdb.Metric {
+	points := []*influxdb.Metric{}
 	points = append(points, makePoint("cache", metrics.Cache))
 	points = append(points, makePoint("usage", metrics.Usage))
 	return nil
 }
 
 // makePoints provides method for making point for InfluxDB
-func makeMetric(name string, value interface{}) *client.Metric {
+func makeMetric(name string, value interface{}) *influxdb.Metric {
 	return influxdb.NewRowMetric(
 		map[string]interface{}{name: value, "cpu": 0.93},
 		"antenna-metrics",
 		map[string]string{"hostname": "hal9000"},
-		time.Date(2018, 3, 4, 5, 6, 7, 8, time.UTC))
+		time.Now())
 }
