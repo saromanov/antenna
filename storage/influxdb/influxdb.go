@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"sync"
-
+	"net/http"
 	"github.com/influxdata/influxdb-client-go"
 	"github.com/pkg/errors"
 	"github.com/saromanov/antenna/storage"
@@ -12,7 +12,7 @@ import (
 )
 
 type influxDB struct {
-	client   influxDB.Client
+	client   *influxdb.Client
 	database string
 	lock     sync.Mutex
 }
@@ -24,17 +24,7 @@ func New(conf *storage.Config) (storage.Storage, error) {
 }
 
 func new(conf *storage.Config) (storage.Storage, error) {
-	config := client.HTTPConfig{
-		Addr:     conf.URL,
-		Username: conf.Username,
-		Password: conf.Password,
-	}
-	cli, err := client.NewHTTPClient(config)
-	if err != nil {
-		return nil, err
-	}
-
-	influx, err := influxdb.New(myHTTPInfluxAddress, myToken, influxdb.WithHTTPClient(myHTTPClient))
+	influx, err := influxdb.New(conf.URL, conf.Password, influxdb.WithHTTPClient(http.DefaultClient))
 	if err != nil {
 		return nil, err
 	}
