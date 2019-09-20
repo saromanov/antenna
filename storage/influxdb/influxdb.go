@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"sync"
+	"context"
 	"net/http"
 	"github.com/influxdata/influxdb-client-go"
 	"github.com/pkg/errors"
@@ -38,18 +39,8 @@ func new(conf *storage.Config) (storage.Storage, error) {
 func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	i.lock.Lock()
 	defer i.lock.Unlock()
-	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-		Database:  i.database,
-		Precision: "s",
-	})
-	if err != nil {
-		return errors.Wrap(err, "unable to create new batch point")
-	}
-	bp.AddPoints(i.toPoints(metrics))
-
-	i.client.Write()
-	if err := i.client.Write(bp); err != nil {
-		return errors.Wrap(err, "unable to write data")
+	if _, err := i.client.Write(context.Background(), i.database, i.database, myMetrics...); err != nil {
+		return errors.Wrap(err, "unable to write metrics")
 	}
 	if err := i.client.Close(); err != nil {
 		return errors.Wrap(err, "unable to close connection")
@@ -96,14 +87,18 @@ func (i *influxDB) Close() error {
 	return i.client.Close()
 }
 
-func (i *influxDB) toPoints(metrics *structs.ContainerStat) []*client.Point {
-	points := []*client.Point{}
+func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []*client.Point {
+	points := []*client.Metric{}
 	points = append(points, makePoint("cache", metrics.Cache))
 	points = append(points, makePoint("usage", metrics.Usage))
 	return nil
 }
 
 // makePoints provides method for making point for InfluxDB
-func makePoint(name string, value interface{}) *client.Point {
-	return nil
+func makeMetric(name string, value interface{}) *client.Metric {
+	return influxdb.NewRowMetric(
+		map[string]interface{}{name: value, "cpu": 0.93},
+		"antenna-metrics",
+		map[string]string{"hostname": "hal9000"},
+		time.Date(2018, 3, 4, 5, 6, 7, 8, time.UTC))
 }
