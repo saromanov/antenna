@@ -36,12 +36,12 @@ func Load(path string) (*Config, error) {
 
 func LoadDefault() *Config {
 	return &Config{
-		InfluxAddress:  "http://localhost:8086",
+		InfluxAddress:  "http://localhost:8086/api/v2",
 		InfluxDatabase: "antenna_container_metrics",
 		SyncTime:       15 * time.Second,
 		ServerAddress:  "localhost:1255",
 		Storage: &storage.Config{
-			URL:      "http://localhost:8086",
+			URL:      "http://localhost:8086/api/v2",
 			Database: "antenna_container_metrics",
 		},
 	}
