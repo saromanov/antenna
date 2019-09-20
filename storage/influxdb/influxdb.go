@@ -2,9 +2,9 @@ package influxdb
 
 import (
 	"context"
-	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
-	"strconv"
 	"sync"
 	"time"
 
@@ -41,7 +41,9 @@ func new(conf *storage.Config) (storage.Storage, error) {
 func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	i.lock.Lock()
 	defer i.lock.Unlock()
-	if _, err := i.client.Write(context.Background(), i.database, i.database, myMetrics...); err != nil {
+
+	metricsConverted := i.toRowMetric(metrics)
+	if _, err := i.client.Write(context.Background(), i.database, i.database, metricsConverted...); err != nil {
 		return errors.Wrap(err, "unable to write metrics")
 	}
 	if err := i.client.Close(); err != nil {
@@ -57,30 +59,17 @@ func (i *influxDB) Search(req *structs.ContainerStatSearch) ([]*structs.Containe
 
 // Search provides searching of the stats by the query
 func (i *influxDB) Aggregate(req *structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error) {
-	q := client.Query{
-		Command:  req.Request,
-		Database: i.database,
-	}
-	response, err := i.client.Query(q)
+	response, err := i.client.QueryCSV(context.TODO(), req.Request, i.database)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to query data")
 	}
-	if response.Error() != nil {
-		return nil, errors.Wrap(response.Error(), "query with error")
-	}
-	res := response.Results
-	if len(res) == 0 {
-		return nil, errors.New("unable to aggregate results")
-	}
 	aggr := &structs.AggregateSearchResponse{}
-	if len(res[0].Series) > 0 {
-		numStr := res[0].Series[0].Values[0][1].(json.Number)
-		num, err := strconv.ParseInt(string(numStr), 10, 64)
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to parse result")
-		}
-		aggr.Count = uint64(num)
+	b, err := ioutil.ReadAll(response)
+	if err != nil {
+		return nil, err
 	}
+
+	fmt.Println(string(b))
 	return aggr, nil
 }
 
