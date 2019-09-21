@@ -26,7 +26,7 @@ func New(conf *storage.Config) (storage.Storage, error) {
 }
 
 func new(conf *storage.Config) (storage.Storage, error) {
-	influx, err := influxdb.New(conf.URL, "", influxdb.WithUserAndPass("influx", "influx"))
+	influx, err := influxdb.New(conf.URL, conf.Token, influxdb.WithUserAndPass(conf.Username, conf.Password))
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to init influx client")
 	}
@@ -42,7 +42,7 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	defer i.lock.Unlock()
 
 	metricsConverted := i.toRowMetric(metrics)
-	if _, err := i.client.Write(context.Background(), i.database, i.database, metricsConverted...); err != nil {
+	if _, err := i.client.Write(context.Background(), i.database, "test", metricsConverted...); err != nil {
 		return errors.Wrap(err, "unable to write metrics")
 	}
 	if err := i.client.Close(); err != nil {

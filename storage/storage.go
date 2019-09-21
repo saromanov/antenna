@@ -8,7 +8,7 @@ type Storage interface {
 	Add(*structs.ContainerStat) error
 	Close() error
 	Search(*structs.ContainerStatSearch) ([]*structs.ContainerStat, error)
-	Aggregate(*structs.AggregateSearchRequest)(*structs.AggregateSearchResponse, error)
+	Aggregate(*structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error)
 }
 
 // Config defines configuration for Storage init
@@ -18,4 +18,5 @@ type Config struct {
 	Username string
 	Password string
 	Database string
+	Token    string
 }
