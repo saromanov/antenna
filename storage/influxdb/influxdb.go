@@ -28,14 +28,8 @@ func New(conf *storage.Config) (storage.Storage, error) {
 func new(conf *storage.Config) (storage.Storage, error) {
 	influx, err := influxdb.New(conf.URL, "", influxdb.WithUserAndPass("influx", "influx"))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "unable to init influx client")
 	}
-
-	_, err = influx.Setup(context.Background(), "antenna-metrics-basic", "antenna-metrics-basic", 0)
-	if err != nil {
-		return nil, err
-	}
-
 	return &influxDB{
 		client:   influx,
 		database: conf.Database,
