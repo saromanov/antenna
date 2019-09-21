@@ -45,9 +45,6 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	if _, err := i.client.Write(context.Background(), i.database, "test", metricsConverted...); err != nil {
 		return errors.Wrap(err, "unable to write metrics")
 	}
-	if err := i.client.Close(); err != nil {
-		return errors.Wrap(err, "unable to close connection")
-	}
 	return nil
 }
 
@@ -81,7 +78,7 @@ func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric
 	points := []influxdb.Metric{}
 	points = append(points, makeMetric("cache", metrics.Cache))
 	points = append(points, makeMetric("usage", metrics.Usage))
-	return nil
+	return points
 }
 
 // makePoints provides method for making point for InfluxDB
@@ -89,6 +86,6 @@ func makeMetric(name string, value interface{}) *influxdb.RowMetric {
 	return influxdb.NewRowMetric(
 		map[string]interface{}{name: value},
 		"antenna-metrics",
-		map[string]string{"hostname": "hal9000"},
+		map[string]string{"image": "hal9000"},
 		time.Now())
 }
