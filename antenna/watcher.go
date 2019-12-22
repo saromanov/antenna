@@ -33,5 +33,8 @@ func (w *containerWatcher) getContainers() []*structs.Container {
 		fmt.Printf("unable to get list of containers: %v\n", err)
 		return nil
 	}
+	if len(containers) == 0 {
+		fmt.Println("unable to find containers")
+	}
 	return containers
 }

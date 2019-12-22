@@ -41,10 +41,15 @@ func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 	w.Write(result)
 }
 
+func (s *server) Info(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+}
+
 func Start(st storage.Storage, address string) {
 
 	s := &server{st: st}
 	http.HandleFunc("/v1/aggregate", s.AggregateMetrics)
+	http.HandleFunc("/v1.info")
 	err := http.ListenAndServe(address, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
