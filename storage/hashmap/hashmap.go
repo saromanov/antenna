@@ -3,7 +3,7 @@ package hashmap
 import (
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 // hashmap represents local storage
@@ -49,4 +49,10 @@ func (h *hashmap) Aggregate(req *structs.AggregateSearchRequest) (*structs.Aggre
 func (h *hashmap) Close() error {
 	h.data = map[string]*structs.ContainerStat{}
 	return nil
+}
+
+func (i *hashmap) Info() map[string]interface{} {
+	return map[string]interface{}{
+		"name": "hashmap",
+	}
 }

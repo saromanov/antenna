@@ -9,6 +9,7 @@ type Storage interface {
 	Close() error
 	Search(*structs.ContainerStatSearch) ([]*structs.ContainerStat, error)
 	Aggregate(*structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error)
+	Info() map[string]interface{}
 }
 
 // Config defines configuration for Storage init

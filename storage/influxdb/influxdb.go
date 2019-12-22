@@ -74,18 +74,24 @@ func (i *influxDB) Close() error {
 	return i.client.Close()
 }
 
+func (i *influxDB) Info() map[string]interface{} {
+	return map[string]interface{}{
+		"name": "influxdb",
+	}
+}
+
 func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric {
 	points := []influxdb.Metric{}
-	points = append(points, makeMetric("cache", metrics.Cache))
-	points = append(points, makeMetric("usage", metrics.Usage))
+	points = append(points, makeMetric("cache", metrics.Cache, metrics.Image))
+	points = append(points, makeMetric("usage", metrics.Usage, metrics.Image))
 	return points
 }
 
 // makePoints provides method for making point for InfluxDB
-func makeMetric(name string, value interface{}) *influxdb.RowMetric {
+func makeMetric(name string, value interface{}, image string) *influxdb.RowMetric {
 	return influxdb.NewRowMetric(
 		map[string]interface{}{name: value},
 		"antenna-metrics",
-		map[string]string{"image": "hal9000"},
+		map[string]string{"image": image},
 		time.Now())
 }
