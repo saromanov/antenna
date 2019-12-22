@@ -103,6 +103,7 @@ func (a *Application) processListContainers(containers []*structs.Container) {
 	for _, c := range containers {
 		container, _ := a.dockerClient.Get(c.ID)
 		stats := a.dockerClient.GetStats(container.ID)
+		stats.Image = container.Image
 		if err := a.insertStats(stats); err != nil {
 			log.WithFields(log.Fields{"method": "processListContainers"}).Infof("unable to insert stat to the storage: %v", err)
 		}

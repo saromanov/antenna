@@ -81,7 +81,6 @@ func (d *Docker) GetStats(id string) *structs.ContainerStat {
 		}
 	}()
 	stats := <-statsC
-	fmt.Println(stats.CPUStats.CPUUsage.PercpuUsage)
 	return d.toStats(stats)
 }
 
