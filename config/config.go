@@ -27,11 +27,12 @@ func Load(path string) (*Config, error) {
 	}
 	err = yaml.Unmarshal([]byte(yamlFile), &c)
 	if err != nil {
-		return nil, fmt.Errorf("unable to ")
+		return nil, fmt.Errorf("unable to unmarshal config")
 	}
 	return c, nil
 }
 
+// LoadDefault provides loading of default data
 func LoadDefault() *Config {
 	return &Config{
 		SyncTime:      15 * time.Second,
@@ -41,7 +42,7 @@ func LoadDefault() *Config {
 			Database: "antenna_metrics_data",
 			Username: "test",
 			Password: "12345678",
-			Token:    "ScOgVIc-Ti6OCTjx4CCfUwiQVm3XvA0cPZEh-NIE0YbXd81izGQ_0Y8f9ZaSw89MtHQv3QS0pkhqCLcm5ju_4w==",
+			Token:    "OZ0haMhRFeaFHqtshqq1rR5jhKG79teQqPOV70T4vhYPAhDCPmkAvDOl9vpbX13jxppU-D6x0SipiXhOhI-0lQ==",
 		},
 	}
 }

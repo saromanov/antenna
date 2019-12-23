@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	structs "github.com/saromanov/antenna/structs/v1"
 )
 

@@ -67,6 +67,7 @@ type ContainerStat struct {
 	Usage     uint64    `json:"usage"`
 	MaxUsage  uint64    `json:"max_usage"`
 	Image     string    `json:"image"`
+	Name      string    `json:"name"`
 }
 
 // ContainerStat returns statistics for container

@@ -82,16 +82,16 @@ func (i *influxDB) Info() map[string]interface{} {
 
 func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric {
 	points := []influxdb.Metric{}
-	points = append(points, makeMetric("cache", metrics.Cache, metrics.Image))
-	points = append(points, makeMetric("usage", metrics.Usage, metrics.Image))
+	points = append(points, makeMetric("cache", metrics.Cache, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("usage", metrics.Usage, metrics.Image, metrics.Name))
 	return points
 }
 
 // makePoints provides method for making point for InfluxDB
-func makeMetric(name string, value interface{}, image string) *influxdb.RowMetric {
+func makeMetric(name string, value interface{}, image, containerName string) *influxdb.RowMetric {
 	return influxdb.NewRowMetric(
 		map[string]interface{}{name: value},
 		"antenna-metrics",
-		map[string]string{"image": image},
+		map[string]string{"image": image, "name": containerName},
 		time.Now())
 }
