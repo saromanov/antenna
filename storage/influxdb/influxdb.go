@@ -86,6 +86,13 @@ func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric
 	points = append(points, makeMetric("usage", metrics.Usage, metrics.Image, metrics.Name))
 	points = append(points, makeMetric("cpu_total_usage", metrics.CPU.TotalUsage, metrics.Image, metrics.Name))
 	points = append(points, makeMetric("cpu_online", metrics.CPU.OnlineCPUs, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("num_procs", metrics.NumProcs, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("read_size_bytes", metrics.ReadSizeBytes, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("write_size_bytes", metrics.WriteSizeBytes, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("tx_packets", metrics.TxPackets, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("tx_dropped", metrics.TxDropped, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("tx_errors", metrics.TxErrors, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("tx_bytes", metrics.TxBytes, metrics.Image, metrics.Name))
 	return points
 }
 

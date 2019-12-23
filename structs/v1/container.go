@@ -58,16 +58,23 @@ type Container struct {
 // ContainerStat provides definition for statistics
 // on container
 type ContainerStat struct {
-	Timestamp time.Time `json:"timestamp"`
-	CPU       CPUStat   `json:"cpu_stat"`
-	HasCPU    bool      `json:"has_cpu"`
-	NumProcs  uint32    `json:"num_procs"`
-	Cache     uint64    `json:"cache"`
-	Limit     uint64    `json:"limit"`
-	Usage     uint64    `json:"usage"`
-	MaxUsage  uint64    `json:"max_usage"`
-	Image     string    `json:"image"`
-	Name      string    `json:"name"`
+	Timestamp      time.Time `json:"timestamp"`
+	CPU            CPUStat   `json:"cpu_stat"`
+	HasCPU         bool      `json:"has_cpu"`
+	NumProcs       uint32    `json:"num_procs"`
+	Cache          uint64    `json:"cache"`
+	Limit          uint64    `json:"limit"`
+	Usage          uint64    `json:"usage"`
+	MaxUsage       uint64    `json:"max_usage"`
+	Image          string    `json:"image"`
+	Name           string    `json:"name"`
+	ReadSizeBytes  uint64    `json:"read_size_bytes"`
+	WriteSizeBytes uint64    `json:"write_size_bytes"`
+	TxPackets      uint64    `json:"tx_packets,omitempty"`
+	TxDropped      uint64    `json:"tx_dropped,omitempty"`
+	RxPackets      uint64    `json:"rx_packets,omitempty"`
+	TxErrors       uint64    `json:"tx_errors,omitempty"`
+	TxBytes        uint64    `json:"tx_bytes,omitempty"`
 }
 
 // ContainerStat returns statistics for container
