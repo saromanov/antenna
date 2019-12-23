@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		log.WithFields(log.Fields{
 			"stage": logStage,
-		}).Warnf("unable to load config: %v", err)
+		}).Infof("unable to load config: %v. Config will be loaded from defaults", err)
 		conf = config.LoadDefault()
 	}
 	st, err := influxdb.New(conf.Storage)
