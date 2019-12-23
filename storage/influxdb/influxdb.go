@@ -84,6 +84,8 @@ func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric
 	points := []influxdb.Metric{}
 	points = append(points, makeMetric("cache", metrics.Cache, metrics.Image, metrics.Name))
 	points = append(points, makeMetric("usage", metrics.Usage, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("cpu_total_usage", metrics.CPU.TotalUsage, metrics.Image, metrics.Name))
+	points = append(points, makeMetric("cpu_online", metrics.CPU.OnlineCPUs, metrics.Image, metrics.Name))
 	return points
 }
 
