@@ -1,11 +1,10 @@
 package antenna
 
 import (
-	"fmt"
-
 	"github.com/robfig/cron"
 	"github.com/saromanov/antenna/container/docker"
 	structs "github.com/saromanov/antenna/structs/v1"
+	log "github.com/sirupsen/logrus"
 )
 
 // containerWatcher creates object for watch running containers
@@ -23,18 +22,20 @@ func (w *containerWatcher) Watch() {
 			containers: w.getContainers(),
 		}
 	})
-	fmt.Printf("starting of the watcher")
+	log.Infof("starting of the watcher")
 	c.Start()
 }
 
 func (w *containerWatcher) getContainers() []*structs.Container {
 	containers, err := w.dockerClient.List(nil)
 	if err != nil {
-		fmt.Printf("unable to get list of containers: %v\n", err)
+		log.WithFields(log.Fields{
+			"stage": "watcher",
+		}).WithError(err).Errorf("unable to get list of containers")
 		return nil
 	}
 	if len(containers) == 0 {
-		fmt.Println("unable to find containers")
+		log.Infof("unable to find containers")
 	}
 	return containers
 }
