@@ -3,8 +3,12 @@ package main
 import (
 	"os"
 
+	"github.com/saromanov/antenna/command/client"
 	"github.com/urfave/cli/v2"
 )
+
+type InfoResponse struct {
+}
 
 func main() {
 	app := &cli.App{
@@ -16,6 +20,11 @@ func main() {
 				Aliases: []string{"i"},
 				Usage:   "return info about running",
 				Action: func(c *cli.Context) error {
+					var resp InfoResponse
+					err := client.Get("localhost:1255/v1/info", &resp)
+					if err != nil {
+						panic(err)
+					}
 					return nil
 				},
 			},

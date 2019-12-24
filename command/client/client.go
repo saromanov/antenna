@@ -1,11 +1,12 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 )
 
+// Get provides sending of the Get request
 func Get(url string, response interface{}) error {
 	resp, err := http.Get(url)
 	if err != nil {
