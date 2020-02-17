@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/saromanov/antenna/storage"
@@ -42,7 +43,7 @@ func LoadDefault() *Config {
 			Database: "antenna_metrics_data",
 			Username: "test",
 			Password: "12345678",
-			Token:    "OZ0haMhRFeaFHqtshqq1rR5jhKG79teQqPOV70T4vhYPAhDCPmkAvDOl9vpbX13jxppU-D6x0SipiXhOhI-0lQ==",
+			Token:    os.Getenv("ANTENNA_STORAGE_TOKEN"),
 		},
 	}
 }
