@@ -1,6 +1,9 @@
 package storage
 
-import structs "github.com/saromanov/antenna/structs/v1"
+import (
+	"os"
+	structs "github.com/saromanov/antenna/structs/v1"
+)
 
 // Storage defines main interface for Providing
 // handling of storage data
@@ -21,4 +24,15 @@ type Config struct {
 	Password     string
 	Database     string
 	Token        string
+}
+
+// LoadDefault provides loading of default storage
+func LoadDefault() *Config {
+	return &Config{
+		URL:      os.Getenv("ANTENNA_STORAGE_URL"),
+		Database: os.Getenv("ANTENNA_STORAGE_DATABASE"),
+		Username: os.Getenv("ANTENNA_STORAGE_USERNAME"),
+		Password: os.Getenv("ANTENNA_STORAGE_PASSWORD"),
+		Token:    os.Getenv("ANTENNA_STORAGE_TOKEN"),
+	}
 }

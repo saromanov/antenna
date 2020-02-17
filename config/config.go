@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 	"time"
 
 	"github.com/saromanov/antenna/storage"
@@ -38,12 +37,6 @@ func LoadDefault() *Config {
 	return &Config{
 		SyncTime:      15 * time.Second,
 		ServerAddress: "localhost:1255",
-		Storage: &storage.Config{
-			URL:      "http://localhost:9999",
-			Database: "antenna_metrics_data",
-			Username: "test",
-			Password: "12345678",
-			Token:    os.Getenv("ANTENNA_STORAGE_TOKEN"),
-		},
+		Storage:       storage.LoadDefault(),
 	}
 }

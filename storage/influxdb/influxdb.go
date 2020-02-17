@@ -44,7 +44,7 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	defer i.lock.Unlock()
 
 	metricsConverted := i.toRowMetric(metrics)
-	if _, err := i.client.Write(context.Background(), i.database, "test", metricsConverted...); err != nil {
+	if _, err := i.client.Write(context.Background(), i.database, i.organization, metricsConverted...); err != nil {
 		return errors.Wrap(err, "unable to write metrics")
 	}
 	return nil
