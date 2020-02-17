@@ -9,6 +9,10 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const (
+	defaultAddress = "localhost:1255"
+)
+
 // Config defines configuration for the antenna
 type Config struct {
 	ServerAddress string          `yaml:"server_address"`
@@ -16,6 +20,13 @@ type Config struct {
 	Storage       *storage.Config `yaml:"storage"`
 	Cert          string          `yaml:"cert_key"`
 	Key           string          `yaml:"key"`
+}
+
+// FillMissing provides filling of the missing mandatory values
+func (c *Config) FillMissing() {
+	if c.ServerAddress == "" {
+		c.ServerAddress = defaultAddress
+	}
 }
 
 // Load provides loading of the config
@@ -36,7 +47,7 @@ func Load(path string) (*Config, error) {
 func LoadDefault() *Config {
 	return &Config{
 		SyncTime:      15 * time.Second,
-		ServerAddress: "localhost:1255",
+		ServerAddress: defaultAddress,
 		Storage:       storage.LoadDefault(),
 	}
 }

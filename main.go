@@ -31,6 +31,7 @@ func main() {
 		}).Infof("unable to load config: %v. Config will be loaded from defaults", err)
 		conf = config.LoadDefault()
 	}
+	conf.FillMissing()
 	st, err := influxdb.New(conf.Storage)
 	if err != nil {
 		log.WithFields(log.Fields{
