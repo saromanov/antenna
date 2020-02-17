@@ -27,10 +27,7 @@ func new(conf *storage.Config) (storage.Storage, error) {
 
 // Add provides adding of stat
 func (h *hashmap) Add(metrics *structs.ContainerStat) error {
-	u, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
+	u := uuid.NewV4()
 	h.data[u.String()] = metrics
 	return nil
 }
