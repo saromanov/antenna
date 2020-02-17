@@ -14,9 +14,10 @@ import (
 )
 
 type influxDB struct {
-	client   *influxdb.Client
-	database string
-	lock     sync.Mutex
+	client       *influxdb.Client
+	database     string
+	organization string
+	lock         sync.Mutex
 }
 
 // New creates storage based on name
@@ -31,8 +32,9 @@ func new(conf *storage.Config) (storage.Storage, error) {
 		return nil, errors.Wrap(err, "unable to init influx client")
 	}
 	return &influxDB{
-		client:   influx,
-		database: conf.Database,
+		client:       influx,
+		database:     conf.Database,
+		organization: conf.Organization,
 	}, nil
 }
 

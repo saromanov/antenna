@@ -14,10 +14,11 @@ type Storage interface {
 
 // Config defines configuration for Storage init
 type Config struct {
-	Name     string
-	URL      string
-	Username string
-	Password string
-	Database string
-	Token    string
+	Organization string
+	Name         string
+	URL          string
+	Username     string
+	Password     string
+	Database     string
+	Token        string
 }
