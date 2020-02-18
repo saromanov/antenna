@@ -102,9 +102,17 @@ func (i *influxDB) Close() error {
 	return i.client.Close()
 }
 
+// Info returns information about storage
 func (i *influxDB) Info() map[string]interface{} {
+	msg := "OK"
+	if err := i.client.Ping(context.TODO()); err != nil {
+		msg = err.Error()
+	}
+
 	return map[string]interface{}{
-		"name": "influxdb",
+		"name":                   "influxdb",
+		"client":                 msg,
+		"metrics_avaailable_num": 11,
 	}
 }
 
