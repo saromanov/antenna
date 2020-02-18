@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/saromanov/antenna/config"
 	"github.com/saromanov/antenna/container/docker"
 	"github.com/saromanov/antenna/storage"
 	structs "github.com/saromanov/antenna/structs/v1"
@@ -19,6 +20,7 @@ type Application struct {
 	HTTPClient     http.Client
 	Store          storage.Storage
 	MapStore       storage.Storage
+	Config         *config.Config
 	events         chan *ContainerEvent
 	dockerClient   *docker.Docker
 	watcher        *containerWatcher

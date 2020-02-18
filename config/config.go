@@ -20,12 +20,16 @@ type Config struct {
 	Storage       *storage.Config `yaml:"storage"`
 	Cert          string          `yaml:"cert_key"`
 	Key           string          `yaml:"key"`
+	IntervalCheck string          `yaml:"interval_check"`
 }
 
 // FillMissing provides filling of the missing mandatory values
 func (c *Config) FillMissing() {
 	if c.ServerAddress == "" {
 		c.ServerAddress = defaultAddress
+	}
+	if c.IntervalCheck == "" {
+		c.IntervalCheck = "@every 5s"
 	}
 }
 

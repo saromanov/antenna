@@ -12,11 +12,12 @@ import (
 type containerWatcher struct {
 	dockerClient *docker.Docker
 	events       chan *ContainerEvent
+	interval     string
 }
 
 func (w *containerWatcher) Watch() {
 	c := cron.New()
-	c.AddFunc("@every 5s", func() {
+	c.AddFunc(w.interval, func() {
 		w.events <- &ContainerEvent{
 			event:      ListContainers,
 			containers: w.getContainers(),

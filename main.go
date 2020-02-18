@@ -65,6 +65,7 @@ func main() {
 		HTTPClient: client,
 		Store:      st,
 		MapStore:   hash,
+		Config:     conf,
 	}
 	ant.Start()
 }
