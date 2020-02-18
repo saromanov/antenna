@@ -34,7 +34,7 @@ func new(conf *storage.Config) (storage.Storage, error) {
 	return &influxDB{
 		client:       influx,
 		database:     conf.Database,
-		organization: conf.Organization,
+		organization: "test",
 	}, nil
 }
 
@@ -104,5 +104,5 @@ func makeMetric(name string, value interface{}, image, containerName string) *in
 		map[string]interface{}{name: value},
 		"antenna-metrics",
 		map[string]string{"image": image, "name": containerName},
-		time.Now())
+		time.Now().UTC())
 }
