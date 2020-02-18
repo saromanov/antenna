@@ -43,8 +43,9 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 	i.lock.Lock()
 	defer i.lock.Unlock()
 
-	metricsConverted := i.toRowMetric(metrics)
+	metricsConverted := toRowMetric(metrics)
 	if _, err := i.client.Write(context.Background(), i.database, i.organization, metricsConverted...); err != nil {
+		fmt.Println("ERRR: ", err)
 		return errors.Wrap(err, "unable to write metrics")
 	}
 	return nil
@@ -82,7 +83,8 @@ func (i *influxDB) Info() map[string]interface{} {
 	}
 }
 
-func (i *influxDB) toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric {
+// Note: Influxdb don't understand uint types. Its converting to int
+func toRowMetric(metrics *structs.ContainerStat) []influxdb.Metric {
 	points := []influxdb.Metric{}
 	points = append(points, makeMetric("cache", metrics.Cache, metrics.Image, metrics.Name))
 	points = append(points, makeMetric("usage", metrics.Usage, metrics.Image, metrics.Name))

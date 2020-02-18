@@ -61,20 +61,20 @@ type ContainerStat struct {
 	Timestamp      time.Time `json:"timestamp"`
 	CPU            CPUStat   `json:"cpu_stat"`
 	HasCPU         bool      `json:"has_cpu"`
-	NumProcs       uint32    `json:"num_procs"`
-	Cache          uint64    `json:"cache"`
-	Limit          uint64    `json:"limit"`
-	Usage          uint64    `json:"usage"`
-	MaxUsage       uint64    `json:"max_usage"`
+	NumProcs       int32     `json:"num_procs"`
+	Cache          int64     `json:"cache"`
+	Limit          int64     `json:"limit"`
+	Usage          int64     `json:"usage"`
+	MaxUsage       int64     `json:"max_usage"`
 	Image          string    `json:"image"`
 	Name           string    `json:"name"`
-	ReadSizeBytes  uint64    `json:"read_size_bytes"`
-	WriteSizeBytes uint64    `json:"write_size_bytes"`
-	TxPackets      uint64    `json:"tx_packets,omitempty"`
-	TxDropped      uint64    `json:"tx_dropped,omitempty"`
-	RxPackets      uint64    `json:"rx_packets,omitempty"`
-	TxErrors       uint64    `json:"tx_errors,omitempty"`
-	TxBytes        uint64    `json:"tx_bytes,omitempty"`
+	ReadSizeBytes  int64     `json:"read_size_bytes"`
+	WriteSizeBytes int64     `json:"write_size_bytes"`
+	TxPackets      int64     `json:"tx_packets,omitempty"`
+	TxDropped      int64     `json:"tx_dropped,omitempty"`
+	RxPackets      int64     `json:"rx_packets,omitempty"`
+	TxErrors       int64     `json:"tx_errors,omitempty"`
+	TxBytes        int64     `json:"tx_bytes,omitempty"`
 }
 
 // ContainerStat returns statistics for container
@@ -86,10 +86,10 @@ type Stat struct {
 
 // CPUStat defines statistics for cpu usage
 type CPUStat struct {
-	TotalUsage      uint64 `json:"total_usage"`
-	SystemCPUUsage  uint64 `json:"system_cpu_usage"`
-	OnlineCPUs      uint64 `json:"online_cpus"`
-	UsageInUsermode uint64 `json:"usage_in_usermode"`
+	TotalUsage      int64 `json:"total_usage"`
+	SystemCPUUsage  int64 `json:"system_cpu_usage"`
+	OnlineCPUs      int64 `json:"online_cpus"`
+	UsageInUsermode int64 `json:"usage_in_usermode"`
 }
 
 // ContainerStatSearch provides searching
