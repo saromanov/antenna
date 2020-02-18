@@ -53,11 +53,29 @@ func (i *influxDB) Add(metrics *structs.ContainerStat) error {
 
 // Search provides searching of the stats by the query
 func (i *influxDB) Search(req *structs.ContainerStatSearch) ([]*structs.ContainerStat, error) {
-	return nil, nil
+	if req == nil || req.Request == "" {
+		return nil, fmt.Errorf("request is not defined")
+	}
+	response, err := i.client.QueryCSV(context.TODO(), req.Request, i.database)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to query data")
+	}
+	resp := []*structs.ContainerStat{}
+	for response.Next() {
+		var stat structs.ContainerStat
+		if err := response.Unmarshal(&stat); err != nil {
+			return nil, err
+		}
+		resp = append(resp, &stat)
+	}
+	return resp, nil
 }
 
 // Search provides searching of the stats by the query
 func (i *influxDB) Aggregate(req *structs.AggregateSearchRequest) (*structs.AggregateSearchResponse, error) {
+	if req == nil || req.Request == "" {
+		return nil, fmt.Errorf("request is not defined")
+	}
 	response, err := i.client.QueryCSV(context.TODO(), req.Request, i.database)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to query data")

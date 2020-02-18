@@ -97,6 +97,7 @@ type CPUStat struct {
 type ContainerStatSearch struct {
 	FromTimestamp time.Time `json:"timestamp"`
 	ToTimestamp   time.Time `json:"timestamp"`
+	Request       string    `json:"request"`
 }
 
 // AggregateSearchRequest provides request
