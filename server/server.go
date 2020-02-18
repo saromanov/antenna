@@ -20,6 +20,7 @@ type server struct {
 func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 	query := r.FormValue("query")
 	if query == "" {
+		w.WriteHeader(http.StatusBadRequest)
 		http.Error(w, "query is not defined", http.StatusInternalServerError)
 		return
 	}
@@ -27,6 +28,7 @@ func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 		Request: query,
 	})
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		http.Error(w, fmt.Sprintf("unable to aggregate query: %v", err), http.StatusInternalServerError)
 		return
 	}
@@ -38,6 +40,7 @@ func (s *server) AggregateMetrics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	w.Write(result)
 }
 
@@ -52,6 +55,7 @@ func (s *server) Info(w http.ResponseWriter, r *http.Request) {
 	w.Write(result)
 }
 
+// Start provides initialization of the server
 func Start(st storage.Storage, address string) {
 	s := &server{st: st}
 	http.HandleFunc("/v1/aggregate", s.AggregateMetrics)
